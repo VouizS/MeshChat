@@ -11,8 +11,8 @@ android {
         applicationId = "com.sw.meshchat"
         minSdk = 26
         targetSdk = 35
-        versionCode = 2
-        versionName = "0.1.1-r1"
+        versionCode = 3
+        versionName = "0.2.0"
     }
 
     buildFeatures {
@@ -42,6 +42,8 @@ dependencies {
     implementation("androidx.compose.foundation:foundation")
     implementation("androidx.compose.material3:material3")
     implementation("androidx.compose.material:material-icons-extended")
+
+    implementation("com.google.android.gms:play-services-nearby:19.3.0")
 
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
