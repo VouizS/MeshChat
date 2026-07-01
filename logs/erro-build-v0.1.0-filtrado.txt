@@ -1,0 +1,15 @@
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:02:36.2641259Z   JAVA_HOME: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.19-10/x64
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:02:36.2643016Z   ANDROID_HOME: /usr/local/lib/android/sdk
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:02:36.2644828Z   GRADLE_USER_HOME: /home/runner/.gradle
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:02:36.2646757Z   DEVELOCITY_INJECTION_INIT_SCRIPT_NAME: gradle-actions.inject-develocity.init.gradle
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:02:36.2647743Z   DEVELOCITY_INJECTION_CUSTOM_VALUE: gradle-actions
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.0501452Z FAILURE: Build failed with an exception.
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.0611027Z * What went wrong:
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.0645112Z Execution failed for task ':app:checkDebugAarMetadata'.
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1177443Z * Exception is:
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1178429Z org.gradle.api.tasks.TaskExecutionException: Execution failed for task ':app:checkDebugAarMetadata'.
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1180566Z 	at org.gradle.api.internal.tasks.execution.CatchExceptionTaskExecuter.execute(CatchExceptionTaskExecuter.java:38)
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1247007Z 	at org.gradle.internal.concurrent.ExecutorPolicy$CatchAndRecordFailures.onExecute(ExecutorPolicy.java:64)
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1251283Z Caused by: com.android.builder.errors.EvalIssueException: Configuration `:app:debugRuntimeClasspath` contains AndroidX dependencies, but the `android.useAndroidX` property is not enabled, which may cause runtime issues.
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1623271Z 	at org.gradle.api.internal.tasks.execution.CatchExceptionTaskExecuter.execute(CatchExceptionTaskExecuter.java:36)
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1664751Z 	at org.gradle.internal.concurrent.ExecutorPolicy$CatchAndRecordFailures.onExecute(ExecutorPolicy.java:64)

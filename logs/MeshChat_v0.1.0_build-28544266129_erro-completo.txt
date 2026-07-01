@@ -1,0 +1,357 @@
+Build Mesh Chat Debug APK	Build debug APK	﻿2026-07-01T20:02:36.2590004Z ##[group]Run gradle :app:assembleDebug --no-daemon --stacktrace
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:02:36.2591405Z ^[[36;1mgradle :app:assembleDebug --no-daemon --stacktrace^[[0m
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:02:36.2639829Z shell: /usr/bin/bash -e {0}
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:02:36.2640655Z env:
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:02:36.2641259Z   JAVA_HOME: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.19-10/x64
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:02:36.2642278Z   JAVA_HOME_17_X64: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.19-10/x64
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:02:36.2643016Z   ANDROID_HOME: /usr/local/lib/android/sdk
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:02:36.2643596Z   ANDROID_SDK_ROOT: /usr/local/lib/android/sdk
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:02:36.2644217Z   GRADLE_ACTION_ID: gradle/actions/setup-gradle
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:02:36.2644828Z   GRADLE_USER_HOME: /home/runner/.gradle
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:02:36.2645379Z   GRADLE_BUILD_ACTION_SETUP_COMPLETED: true
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:02:36.2645939Z   GRADLE_BUILD_ACTION_CACHE_RESTORED: true
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:02:36.2646757Z   DEVELOCITY_INJECTION_INIT_SCRIPT_NAME: gradle-actions.inject-develocity.init.gradle
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:02:36.2647743Z   DEVELOCITY_INJECTION_CUSTOM_VALUE: gradle-actions
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:02:36.2648365Z   GITHUB_DEPENDENCY_GRAPH_ENABLED: false
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:02:36.2648862Z ##[endgroup]
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:02:36.8498370Z 
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:02:36.8499395Z Welcome to Gradle 8.10.2!
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:02:36.8500120Z 
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:02:36.8501240Z Here are the highlights of this release:
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:02:36.8506297Z  - Support for Java 23
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:02:36.8509654Z  - Faster configuration cache
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:02:36.8511151Z  - Better configuration cache reports
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:02:36.8511728Z 
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:02:36.8512447Z For more details see https://docs.gradle.org/8.10.2/release-notes.html
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:02:36.8513578Z 
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:02:36.9473166Z To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/8.10.2/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:02:38.6452588Z Daemon will be stopped at the end of the build 
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:42.3495514Z > Task :app:preBuild UP-TO-DATE
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:42.3499575Z > Task :app:preDebugBuild UP-TO-DATE
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:42.3500786Z > Task :app:mergeDebugNativeDebugMetadata NO-SOURCE
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:42.3501804Z > Task :app:checkKotlinGradlePluginConfigurationErrors
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:54.9461679Z > Task :app:checkDebugAarMetadata FAILED
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.0491251Z 
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.0492613Z gradle/actions: Writing build results to /home/runner/work/_temp/.gradle-actions/build-results/__run_2-1782936163416.json
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.0501452Z FAILURE: Build failed with an exception.
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.0600875Z 
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.0611027Z * What went wrong:
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.0645112Z Execution failed for task ':app:checkDebugAarMetadata'.
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.0671344Z > Configuration `:app:debugRuntimeClasspath` contains AndroidX dependencies, but the `android.useAndroidX` property is not enabled, which may cause runtime issues.
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.0791640Z   Set `android.useAndroidX=true` in the `gradle.properties` file and retry.
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.0821376Z   The following AndroidX dependencies are detected:
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.0881638Z   :app:debugRuntimeClasspath -> androidx.compose.ui:ui-tooling:1.7.3
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.0901043Z 2 actionable tasks: 2 executed
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.0926409Z   :app:debugRuntimeClasspath -> androidx.compose:compose-bom:2024.09.03 -> androidx.compose.ui:ui-tooling-android:1.7.3
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.0927855Z   :app:debugRuntimeClasspath -> androidx.activity:activity-compose:1.9.3
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.0936737Z   :app:debugRuntimeClasspath -> androidx.compose:compose-bom:2024.09.03 -> androidx.compose.ui:ui-android:1.7.3 -> androidx.activity:activity-ktx:1.9.3
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.0956229Z   :app:debugRuntimeClasspath -> androidx.compose:compose-bom:2024.09.03 -> androidx.compose.ui:ui-android:1.7.3 -> androidx.activity:activity-ktx:1.9.3 -> androidx.activity:activity:1.9.3
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.0958876Z   :app:debugRuntimeClasspath -> androidx.compose:compose-bom:2024.09.03 -> androidx.compose.material3:material3-android:1.3.0 -> androidx.annotation:annotation:1.8.1
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.0962542Z   :app:debugRuntimeClasspath -> androidx.compose:compose-bom:2024.09.03 -> androidx.compose.material3:material3-android:1.3.0 -> androidx.annotation:annotation:1.8.1 -> androidx.annotation:annotation-jvm:1.8.1
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.0965322Z   :app:debugRuntimeClasspath -> androidx.compose:compose-bom:2024.09.03 -> androidx.compose.material3:material3-android:1.3.0 -> androidx.collection:collection:1.4.4
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.0968111Z   :app:debugRuntimeClasspath -> androidx.compose:compose-bom:2024.09.03 -> androidx.compose.material3:material3-android:1.3.0 -> androidx.collection:collection:1.4.4 -> androidx.collection:collection-jvm:1.4.4
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.0971017Z   :app:debugRuntimeClasspath -> androidx.compose:compose-bom:2024.09.03 -> androidx.compose.ui:ui-unit-android:1.7.3 -> androidx.collection:collection-ktx:1.4.4
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.0973254Z   :app:debugRuntimeClasspath -> androidx.compose:compose-bom:2024.09.03 -> androidx.compose.ui:ui-graphics-android:1.7.3 -> androidx.core:core:1.13.1
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.0975689Z   :app:debugRuntimeClasspath -> androidx.compose:compose-bom:2024.09.03 -> androidx.compose.material3:material3-android:1.3.0 -> androidx.annotation:annotation-experimental:1.4.1
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.0978368Z   :app:debugRuntimeClasspath -> androidx.compose:compose-bom:2024.09.03 -> androidx.compose.ui:ui-graphics-android:1.7.3 -> androidx.core:core:1.13.1 -> androidx.concurrent:concurrent-futures:1.1.0
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.0981281Z   :app:debugRuntimeClasspath -> androidx.compose:compose-bom:2024.09.03 -> androidx.compose.ui:ui-graphics-android:1.7.3 -> androidx.core:core:1.13.1 -> androidx.interpolator:interpolator:1.0.0
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.0984085Z   :app:debugRuntimeClasspath -> androidx.compose:compose-bom:2024.09.03 -> androidx.compose.material:material-android:1.7.3 -> androidx.lifecycle:lifecycle-runtime:2.8.3
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.0987168Z   :app:debugRuntimeClasspath -> androidx.compose:compose-bom:2024.09.03 -> androidx.compose.material:material-android:1.7.3 -> androidx.lifecycle:lifecycle-runtime:2.8.3 -> androidx.lifecycle:lifecycle-runtime-android:2.8.3
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.0995707Z   :app:debugRuntimeClasspath -> androidx.compose:compose-bom:2024.09.03 -> androidx.compose.material:material-android:1.7.3 -> androidx.lifecycle:lifecycle-runtime:2.8.3 -> androidx.lifecycle:lifecycle-runtime-android:2.8.3 -> androidx.arch.core:core-common:2.2.0
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1000571Z   :app:debugRuntimeClasspath -> androidx.compose:compose-bom:2024.09.03 -> androidx.compose.material:material-android:1.7.3 -> androidx.lifecycle:lifecycle-runtime:2.8.3 -> androidx.lifecycle:lifecycle-runtime-android:2.8.3 -> androidx.arch.core:core-runtime:2.2.0
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1004139Z   :app:debugRuntimeClasspath -> androidx.compose:compose-bom:2024.09.03 -> androidx.compose.ui:ui-tooling-android:1.7.3 -> androidx.lifecycle:lifecycle-common:2.8.3
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1007534Z   :app:debugRuntimeClasspath -> androidx.compose:compose-bom:2024.09.03 -> androidx.compose.ui:ui-tooling-android:1.7.3 -> androidx.lifecycle:lifecycle-common:2.8.3 -> androidx.lifecycle:lifecycle-common-jvm:2.8.3
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1010806Z   :app:debugRuntimeClasspath -> androidx.compose:compose-bom:2024.09.03 -> androidx.compose.material3:material3-android:1.3.0 -> androidx.lifecycle:lifecycle-common-java8:2.8.3
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1013724Z   :app:debugRuntimeClasspath -> androidx.compose:compose-bom:2024.09.03 -> androidx.compose.ui:ui-text-android:1.7.3 -> androidx.emoji2:emoji2:1.3.0 -> androidx.lifecycle:lifecycle-process:2.8.3
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1016559Z   :app:debugRuntimeClasspath -> androidx.compose:compose-bom:2024.09.03 -> androidx.compose.ui:ui-text-android:1.7.3 -> androidx.emoji2:emoji2:1.3.0 -> androidx.startup:startup-runtime:1.1.1
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1019718Z   :app:debugRuntimeClasspath -> androidx.compose:compose-bom:2024.09.03 -> androidx.compose.ui:ui-android:1.7.3 -> androidx.activity:activity-ktx:1.9.3 -> androidx.activity:activity:1.9.3 -> androidx.tracing:tracing:1.0.0
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1023082Z   :app:debugRuntimeClasspath -> androidx.compose:compose-bom:2024.09.03 -> androidx.compose.ui:ui-android:1.7.3 -> androidx.lifecycle:lifecycle-runtime-compose:2.8.3
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1026184Z   :app:debugRuntimeClasspath -> androidx.compose:compose-bom:2024.09.03 -> androidx.compose.ui:ui-android:1.7.3 -> androidx.lifecycle:lifecycle-runtime-compose:2.8.3 -> androidx.lifecycle:lifecycle-runtime-compose-android:2.8.3
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1029015Z   :app:debugRuntimeClasspath -> androidx.compose:compose-bom:2024.09.03 -> androidx.compose.runtime:runtime:1.7.3
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1031388Z   :app:debugRuntimeClasspath -> androidx.compose:compose-bom:2024.09.03 -> androidx.compose.runtime:runtime-android:1.7.3
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1033504Z   :app:debugRuntimeClasspath -> androidx.compose:compose-bom:2024.09.03 -> androidx.compose.runtime:runtime-saveable:1.7.3
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1035669Z   :app:debugRuntimeClasspath -> androidx.compose:compose-bom:2024.09.03 -> androidx.compose.runtime:runtime-saveable-android:1.7.3
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1038430Z   :app:debugRuntimeClasspath -> androidx.compose:compose-bom:2024.09.03 -> androidx.compose.ui:ui-android:1.7.3 -> androidx.activity:activity-ktx:1.9.3 -> androidx.lifecycle:lifecycle-runtime-ktx:2.8.3
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1042141Z   :app:debugRuntimeClasspath -> androidx.compose:compose-bom:2024.09.03 -> androidx.compose.ui:ui-android:1.7.3 -> androidx.activity:activity-ktx:1.9.3 -> androidx.lifecycle:lifecycle-runtime-ktx:2.8.3 -> androidx.lifecycle:lifecycle-runtime-ktx-android:2.8.3
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1046654Z   :app:debugRuntimeClasspath -> androidx.compose:compose-bom:2024.09.03 -> androidx.compose.material:material-android:1.7.3 -> androidx.lifecycle:lifecycle-runtime:2.8.3 -> androidx.lifecycle:lifecycle-runtime-android:2.8.3 -> androidx.lifecycle:lifecycle-livedata-core:2.8.3
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1049798Z   :app:debugRuntimeClasspath -> androidx.compose:compose-bom:2024.09.03 -> androidx.compose.material:material-android:1.7.3 -> androidx.lifecycle:lifecycle-viewmodel:2.8.3
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1053345Z   :app:debugRuntimeClasspath -> androidx.compose:compose-bom:2024.09.03 -> androidx.compose.material:material-android:1.7.3 -> androidx.lifecycle:lifecycle-viewmodel:2.8.3 -> androidx.lifecycle:lifecycle-viewmodel-android:2.8.3
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1056713Z   :app:debugRuntimeClasspath -> androidx.compose:compose-bom:2024.09.03 -> androidx.compose.ui:ui-android:1.7.3 -> androidx.activity:activity-ktx:1.9.3 -> androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.3
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1059895Z   :app:debugRuntimeClasspath -> androidx.compose:compose-bom:2024.09.03 -> androidx.compose.ui:ui-android:1.7.3 -> androidx.activity:activity-ktx:1.9.3 -> androidx.activity:activity:1.9.3 -> androidx.lifecycle:lifecycle-viewmodel-savedstate:2.8.3
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1063414Z   :app:debugRuntimeClasspath -> androidx.compose:compose-bom:2024.09.03 -> androidx.compose.ui:ui-android:1.7.3 -> androidx.activity:activity-ktx:1.9.3 -> androidx.core:core-ktx:1.13.1
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1066276Z   :app:debugRuntimeClasspath -> androidx.compose:compose-bom:2024.09.03 -> androidx.compose.material:material-android:1.7.3 -> androidx.savedstate:savedstate:1.2.1
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1068941Z   :app:debugRuntimeClasspath -> androidx.compose:compose-bom:2024.09.03 -> androidx.compose.ui:ui-tooling-android:1.7.3 -> androidx.savedstate:savedstate-ktx:1.2.1
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1071824Z   :app:debugRuntimeClasspath -> androidx.compose:compose-bom:2024.09.03 -> androidx.compose.ui:ui-android:1.7.3 -> androidx.profileinstaller:profileinstaller:1.3.1
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1074454Z   :app:debugRuntimeClasspath -> androidx.compose:compose-bom:2024.09.03 -> androidx.compose.ui:ui-graphics-android:1.7.3 -> androidx.core:core:1.13.1 -> androidx.versionedparcelable:versionedparcelable:1.1.1
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1076253Z   :app:debugRuntimeClasspath -> androidx.compose.ui:ui:1.7.3
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1107884Z   :app:debugRuntimeClasspath -> androidx.compose:compose-bom:2024.09.03 -> androidx.compose.ui:ui-android:1.7.3
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1110008Z   :app:debugRuntimeClasspath -> androidx.compose:compose-bom:2024.09.03 -> androidx.compose.ui:ui-android:1.7.3 -> androidx.autofill:autofill:1.0.0
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1112134Z   :app:debugRuntimeClasspath -> androidx.compose:compose-bom:2024.09.03 -> androidx.compose.ui:ui-geometry:1.7.3
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1113869Z   :app:debugRuntimeClasspath -> androidx.compose:compose-bom:2024.09.03 -> androidx.compose.ui:ui-geometry-android:1.7.3
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1115546Z   :app:debugRuntimeClasspath -> androidx.compose:compose-bom:2024.09.03 -> androidx.compose.ui:ui-util:1.7.3
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1117211Z   :app:debugRuntimeClasspath -> androidx.compose:compose-bom:2024.09.03 -> androidx.compose.ui:ui-util-android:1.7.3
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1118879Z   :app:debugRuntimeClasspath -> androidx.compose:compose-bom:2024.09.03 -> androidx.compose.ui:ui-graphics:1.7.3
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1120753Z   :app:debugRuntimeClasspath -> androidx.compose:compose-bom:2024.09.03 -> androidx.compose.ui:ui-graphics-android:1.7.3
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1122390Z   :app:debugRuntimeClasspath -> androidx.compose:compose-bom:2024.09.03 -> androidx.compose.ui:ui-unit:1.7.3
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1128902Z   :app:debugRuntimeClasspath -> androidx.compose:compose-bom:2024.09.03 -> androidx.compose.ui:ui-unit-android:1.7.3
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1131028Z   :app:debugRuntimeClasspath -> androidx.compose:compose-bom:2024.09.03 -> androidx.compose.ui:ui-text:1.7.3
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1132605Z   :app:debugRuntimeClasspath -> androidx.compose:compose-bom:2024.09.03 -> androidx.compose.ui:ui-text-android:1.7.3
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1134683Z   :app:debugRuntimeClasspath -> androidx.compose:compose-bom:2024.09.03 -> androidx.compose.ui:ui-text-android:1.7.3 -> androidx.emoji2:emoji2:1.3.0
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1136356Z   :app:debugRuntimeClasspath -> androidx.compose:compose-bom:2024.09.03 -> androidx.compose.ui:ui-tooling-data:1.7.3
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1137914Z   :app:debugRuntimeClasspath -> androidx.compose:compose-bom:2024.09.03 -> androidx.compose.ui:ui-tooling-data-android:1.7.3
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1139186Z   :app:debugRuntimeClasspath -> androidx.compose.ui:ui-tooling-preview:1.7.3
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1140752Z   :app:debugRuntimeClasspath -> androidx.compose:compose-bom:2024.09.03 -> androidx.compose.ui:ui-tooling-preview-android:1.7.3
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1142740Z   :app:debugRuntimeClasspath -> androidx.compose:compose-bom:2024.09.03 -> androidx.compose.ui:ui-graphics-android:1.7.3 -> androidx.graphics:graphics-path:1.0.1
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1144887Z   :app:debugRuntimeClasspath -> androidx.compose:compose-bom:2024.09.03 -> androidx.compose.ui:ui-android:1.7.3 -> androidx.customview:customview-poolingcontainer:1.0.0
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1146414Z   :app:debugRuntimeClasspath -> androidx.compose.foundation:foundation:1.7.3
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1147789Z   :app:debugRuntimeClasspath -> androidx.compose:compose-bom:2024.09.03 -> androidx.compose.foundation:foundation-android:1.7.3
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1149366Z   :app:debugRuntimeClasspath -> androidx.compose:compose-bom:2024.09.03 -> androidx.compose.animation:animation:1.7.3
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1151123Z   :app:debugRuntimeClasspath -> androidx.compose:compose-bom:2024.09.03 -> androidx.compose.animation:animation-android:1.7.3
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1152721Z   :app:debugRuntimeClasspath -> androidx.compose:compose-bom:2024.09.03 -> androidx.compose.animation:animation-core:1.7.3
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1154347Z   :app:debugRuntimeClasspath -> androidx.compose:compose-bom:2024.09.03 -> androidx.compose.animation:animation-core-android:1.7.3
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1156037Z   :app:debugRuntimeClasspath -> androidx.compose:compose-bom:2024.09.03 -> androidx.compose.foundation:foundation-layout:1.7.3
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1157737Z   :app:debugRuntimeClasspath -> androidx.compose:compose-bom:2024.09.03 -> androidx.compose.foundation:foundation-layout-android:1.7.3
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1159436Z   :app:debugRuntimeClasspath -> androidx.compose:compose-bom:2024.09.03 -> androidx.compose.material:material:1.7.3
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1162302Z   :app:debugRuntimeClasspath -> androidx.compose:compose-bom:2024.09.03 -> androidx.compose.material:material-android:1.7.3
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1164344Z   :app:debugRuntimeClasspath -> androidx.compose:compose-bom:2024.09.03 -> androidx.compose.material:material-ripple:1.7.3
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1166343Z   :app:debugRuntimeClasspath -> androidx.compose:compose-bom:2024.09.03 -> androidx.compose.material:material-ripple-android:1.7.3
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1167717Z   :app:debugRuntimeClasspath -> androidx.compose:compose-bom:2024.09.03
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1168777Z   :app:debugRuntimeClasspath -> androidx.compose.material3:material3:1.3.0
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1170405Z   :app:debugRuntimeClasspath -> androidx.compose:compose-bom:2024.09.03 -> androidx.compose.material3:material3-android:1.3.0
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1172152Z   :app:debugRuntimeClasspath -> androidx.compose:compose-bom:2024.09.03 -> androidx.compose.material:material-icons-core:1.7.3
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1173983Z   :app:debugRuntimeClasspath -> androidx.compose:compose-bom:2024.09.03 -> androidx.compose.material:material-icons-core-android:1.7.3
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1174886Z 
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1175027Z * Try:
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1175601Z > Run with --info or --debug option to get more log output.
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1176286Z > Run with --scan to get full insights.
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1176910Z > Get more help at https://help.gradle.org.
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1177268Z 
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1177443Z * Exception is:
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1178429Z org.gradle.api.tasks.TaskExecutionException: Execution failed for task ':app:checkDebugAarMetadata'.
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1180566Z 	at org.gradle.api.internal.tasks.execution.CatchExceptionTaskExecuter.execute(CatchExceptionTaskExecuter.java:38)
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1182454Z 	at org.gradle.api.internal.tasks.execution.EventFiringTaskExecuter$1.executeTask(EventFiringTaskExecuter.java:77)
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1184216Z 	at org.gradle.api.internal.tasks.execution.EventFiringTaskExecuter$1.call(EventFiringTaskExecuter.java:55)
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1185900Z 	at org.gradle.api.internal.tasks.execution.EventFiringTaskExecuter$1.call(EventFiringTaskExecuter.java:52)
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1187972Z 	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:209)
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1190452Z 	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:204)
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1192630Z 	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:66)
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1194416Z 	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:59)
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1196144Z 	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:166)
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1197947Z 	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:59)
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1199694Z 	at org.gradle.internal.operations.DefaultBuildOperationRunner.call(DefaultBuildOperationRunner.java:53)
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1201881Z 	at org.gradle.api.internal.tasks.execution.EventFiringTaskExecuter.execute(EventFiringTaskExecuter.java:52)
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1203467Z 	at org.gradle.execution.plan.LocalTaskNodeExecutor.execute(LocalTaskNodeExecutor.java:42)
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1205267Z 	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$InvokeNodeExecutorsAction.execute(DefaultTaskExecutionGraph.java:331)
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1207430Z 	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$InvokeNodeExecutorsAction.execute(DefaultTaskExecutionGraph.java:318)
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1209692Z 	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$BuildOperationAwareExecutionAction.lambda$execute$0(DefaultTaskExecutionGraph.java:314)
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1211992Z 	at org.gradle.internal.operations.CurrentBuildOperationRef.with(CurrentBuildOperationRef.java:85)
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1216337Z 	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$BuildOperationAwareExecutionAction.execute(DefaultTaskExecutionGraph.java:314)
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1218672Z 	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$BuildOperationAwareExecutionAction.execute(DefaultTaskExecutionGraph.java:303)
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1243784Z 	at org.gradle.execution.plan.DefaultPlanExecutor$ExecutorWorker.execute(DefaultPlanExecutor.java:459)
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1245398Z 	at org.gradle.execution.plan.DefaultPlanExecutor$ExecutorWorker.run(DefaultPlanExecutor.java:376)
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1247007Z 	at org.gradle.internal.concurrent.ExecutorPolicy$CatchAndRecordFailures.onExecute(ExecutorPolicy.java:64)
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1248552Z 	at org.gradle.internal.concurrent.AbstractManagedExecutor$1.run(AbstractManagedExecutor.java:48)
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1251283Z Caused by: com.android.builder.errors.EvalIssueException: Configuration `:app:debugRuntimeClasspath` contains AndroidX dependencies, but the `android.useAndroidX` property is not enabled, which may cause runtime issues.
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1253286Z Set `android.useAndroidX=true` in the `gradle.properties` file and retry.
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1254121Z The following AndroidX dependencies are detected:
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1254979Z :app:debugRuntimeClasspath -> androidx.compose.ui:ui-tooling:1.7.3
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1256352Z :app:debugRuntimeClasspath -> androidx.compose:compose-bom:2024.09.03 -> androidx.compose.ui:ui-tooling-android:1.7.3
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1257904Z :app:debugRuntimeClasspath -> androidx.activity:activity-compose:1.9.3
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1259524Z :app:debugRuntimeClasspath -> androidx.compose:compose-bom:2024.09.03 -> androidx.compose.ui:ui-android:1.7.3 -> androidx.activity:activity-ktx:1.9.3
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1268939Z :app:debugRuntimeClasspath -> androidx.compose:compose-bom:2024.09.03 -> androidx.compose.ui:ui-android:1.7.3 -> androidx.activity:activity-ktx:1.9.3 -> androidx.activity:activity:1.9.3
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1271647Z :app:debugRuntimeClasspath -> androidx.compose:compose-bom:2024.09.03 -> androidx.compose.material3:material3-android:1.3.0 -> androidx.annotation:annotation:1.8.1
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1274281Z :app:debugRuntimeClasspath -> androidx.compose:compose-bom:2024.09.03 -> androidx.compose.material3:material3-android:1.3.0 -> androidx.annotation:annotation:1.8.1 -> androidx.annotation:annotation-jvm:1.8.1
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1276835Z :app:debugRuntimeClasspath -> androidx.compose:compose-bom:2024.09.03 -> androidx.compose.material3:material3-android:1.3.0 -> androidx.collection:collection:1.4.4
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1279401Z :app:debugRuntimeClasspath -> androidx.compose:compose-bom:2024.09.03 -> androidx.compose.material3:material3-android:1.3.0 -> androidx.collection:collection:1.4.4 -> androidx.collection:collection-jvm:1.4.4
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1282029Z :app:debugRuntimeClasspath -> androidx.compose:compose-bom:2024.09.03 -> androidx.compose.ui:ui-unit-android:1.7.3 -> androidx.collection:collection-ktx:1.4.4
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1284060Z :app:debugRuntimeClasspath -> androidx.compose:compose-bom:2024.09.03 -> androidx.compose.ui:ui-graphics-android:1.7.3 -> androidx.core:core:1.13.1
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1286242Z :app:debugRuntimeClasspath -> androidx.compose:compose-bom:2024.09.03 -> androidx.compose.material3:material3-android:1.3.0 -> androidx.annotation:annotation-experimental:1.4.1
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1289311Z :app:debugRuntimeClasspath -> androidx.compose:compose-bom:2024.09.03 -> androidx.compose.ui:ui-graphics-android:1.7.3 -> androidx.core:core:1.13.1 -> androidx.concurrent:concurrent-futures:1.1.0
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1292150Z :app:debugRuntimeClasspath -> androidx.compose:compose-bom:2024.09.03 -> androidx.compose.ui:ui-graphics-android:1.7.3 -> androidx.core:core:1.13.1 -> androidx.interpolator:interpolator:1.0.0
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1294509Z :app:debugRuntimeClasspath -> androidx.compose:compose-bom:2024.09.03 -> androidx.compose.material:material-android:1.7.3 -> androidx.lifecycle:lifecycle-runtime:2.8.3
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1297373Z :app:debugRuntimeClasspath -> androidx.compose:compose-bom:2024.09.03 -> androidx.compose.material:material-android:1.7.3 -> androidx.lifecycle:lifecycle-runtime:2.8.3 -> androidx.lifecycle:lifecycle-runtime-android:2.8.3
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1301078Z :app:debugRuntimeClasspath -> androidx.compose:compose-bom:2024.09.03 -> androidx.compose.material:material-android:1.7.3 -> androidx.lifecycle:lifecycle-runtime:2.8.3 -> androidx.lifecycle:lifecycle-runtime-android:2.8.3 -> androidx.arch.core:core-common:2.2.0
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1304862Z :app:debugRuntimeClasspath -> androidx.compose:compose-bom:2024.09.03 -> androidx.compose.material:material-android:1.7.3 -> androidx.lifecycle:lifecycle-runtime:2.8.3 -> androidx.lifecycle:lifecycle-runtime-android:2.8.3 -> androidx.arch.core:core-runtime:2.2.0
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1307890Z :app:debugRuntimeClasspath -> androidx.compose:compose-bom:2024.09.03 -> androidx.compose.ui:ui-tooling-android:1.7.3 -> androidx.lifecycle:lifecycle-common:2.8.3
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1310962Z :app:debugRuntimeClasspath -> androidx.compose:compose-bom:2024.09.03 -> androidx.compose.ui:ui-tooling-android:1.7.3 -> androidx.lifecycle:lifecycle-common:2.8.3 -> androidx.lifecycle:lifecycle-common-jvm:2.8.3
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1313759Z :app:debugRuntimeClasspath -> androidx.compose:compose-bom:2024.09.03 -> androidx.compose.material3:material3-android:1.3.0 -> androidx.lifecycle:lifecycle-common-java8:2.8.3
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1316424Z :app:debugRuntimeClasspath -> androidx.compose:compose-bom:2024.09.03 -> androidx.compose.ui:ui-text-android:1.7.3 -> androidx.emoji2:emoji2:1.3.0 -> androidx.lifecycle:lifecycle-process:2.8.3
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1319359Z :app:debugRuntimeClasspath -> androidx.compose:compose-bom:2024.09.03 -> androidx.compose.ui:ui-text-android:1.7.3 -> androidx.emoji2:emoji2:1.3.0 -> androidx.startup:startup-runtime:1.1.1
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1322879Z :app:debugRuntimeClasspath -> androidx.compose:compose-bom:2024.09.03 -> androidx.compose.ui:ui-android:1.7.3 -> androidx.activity:activity-ktx:1.9.3 -> androidx.activity:activity:1.9.3 -> androidx.tracing:tracing:1.0.0
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1325431Z :app:debugRuntimeClasspath -> androidx.compose:compose-bom:2024.09.03 -> androidx.compose.ui:ui-android:1.7.3 -> androidx.lifecycle:lifecycle-runtime-compose:2.8.3
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1327938Z :app:debugRuntimeClasspath -> androidx.compose:compose-bom:2024.09.03 -> androidx.compose.ui:ui-android:1.7.3 -> androidx.lifecycle:lifecycle-runtime-compose:2.8.3 -> androidx.lifecycle:lifecycle-runtime-compose-android:2.8.3
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1330029Z :app:debugRuntimeClasspath -> androidx.compose:compose-bom:2024.09.03 -> androidx.compose.runtime:runtime:1.7.3
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1332004Z :app:debugRuntimeClasspath -> androidx.compose:compose-bom:2024.09.03 -> androidx.compose.runtime:runtime-android:1.7.3
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1333755Z :app:debugRuntimeClasspath -> androidx.compose:compose-bom:2024.09.03 -> androidx.compose.runtime:runtime-saveable:1.7.3
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1335607Z :app:debugRuntimeClasspath -> androidx.compose:compose-bom:2024.09.03 -> androidx.compose.runtime:runtime-saveable-android:1.7.3
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1338015Z :app:debugRuntimeClasspath -> androidx.compose:compose-bom:2024.09.03 -> androidx.compose.ui:ui-android:1.7.3 -> androidx.activity:activity-ktx:1.9.3 -> androidx.lifecycle:lifecycle-runtime-ktx:2.8.3
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1341693Z :app:debugRuntimeClasspath -> androidx.compose:compose-bom:2024.09.03 -> androidx.compose.ui:ui-android:1.7.3 -> androidx.activity:activity-ktx:1.9.3 -> androidx.lifecycle:lifecycle-runtime-ktx:2.8.3 -> androidx.lifecycle:lifecycle-runtime-ktx-android:2.8.3
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1345663Z :app:debugRuntimeClasspath -> androidx.compose:compose-bom:2024.09.03 -> androidx.compose.material:material-android:1.7.3 -> androidx.lifecycle:lifecycle-runtime:2.8.3 -> androidx.lifecycle:lifecycle-runtime-android:2.8.3 -> androidx.lifecycle:lifecycle-livedata-core:2.8.3
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1349008Z :app:debugRuntimeClasspath -> androidx.compose:compose-bom:2024.09.03 -> androidx.compose.material:material-android:1.7.3 -> androidx.lifecycle:lifecycle-viewmodel:2.8.3
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1352156Z :app:debugRuntimeClasspath -> androidx.compose:compose-bom:2024.09.03 -> androidx.compose.material:material-android:1.7.3 -> androidx.lifecycle:lifecycle-viewmodel:2.8.3 -> androidx.lifecycle:lifecycle-viewmodel-android:2.8.3
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1355200Z :app:debugRuntimeClasspath -> androidx.compose:compose-bom:2024.09.03 -> androidx.compose.ui:ui-android:1.7.3 -> androidx.activity:activity-ktx:1.9.3 -> androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.3
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1358399Z :app:debugRuntimeClasspath -> androidx.compose:compose-bom:2024.09.03 -> androidx.compose.ui:ui-android:1.7.3 -> androidx.activity:activity-ktx:1.9.3 -> androidx.activity:activity:1.9.3 -> androidx.lifecycle:lifecycle-viewmodel-savedstate:2.8.3
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1361550Z :app:debugRuntimeClasspath -> androidx.compose:compose-bom:2024.09.03 -> androidx.compose.ui:ui-android:1.7.3 -> androidx.activity:activity-ktx:1.9.3 -> androidx.core:core-ktx:1.13.1
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1364014Z :app:debugRuntimeClasspath -> androidx.compose:compose-bom:2024.09.03 -> androidx.compose.material:material-android:1.7.3 -> androidx.savedstate:savedstate:1.2.1
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1366365Z :app:debugRuntimeClasspath -> androidx.compose:compose-bom:2024.09.03 -> androidx.compose.ui:ui-tooling-android:1.7.3 -> androidx.savedstate:savedstate-ktx:1.2.1
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1368682Z :app:debugRuntimeClasspath -> androidx.compose:compose-bom:2024.09.03 -> androidx.compose.ui:ui-android:1.7.3 -> androidx.profileinstaller:profileinstaller:1.3.1
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1371938Z :app:debugRuntimeClasspath -> androidx.compose:compose-bom:2024.09.03 -> androidx.compose.ui:ui-graphics-android:1.7.3 -> androidx.core:core:1.13.1 -> androidx.versionedparcelable:versionedparcelable:1.1.1
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1373733Z :app:debugRuntimeClasspath -> androidx.compose.ui:ui:1.7.3
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1375016Z :app:debugRuntimeClasspath -> androidx.compose:compose-bom:2024.09.03 -> androidx.compose.ui:ui-android:1.7.3
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1376899Z :app:debugRuntimeClasspath -> androidx.compose:compose-bom:2024.09.03 -> androidx.compose.ui:ui-android:1.7.3 -> androidx.autofill:autofill:1.0.0
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1378704Z :app:debugRuntimeClasspath -> androidx.compose:compose-bom:2024.09.03 -> androidx.compose.ui:ui-geometry:1.7.3
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1380589Z :app:debugRuntimeClasspath -> androidx.compose:compose-bom:2024.09.03 -> androidx.compose.ui:ui-geometry-android:1.7.3
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1382231Z :app:debugRuntimeClasspath -> androidx.compose:compose-bom:2024.09.03 -> androidx.compose.ui:ui-util:1.7.3
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1383875Z :app:debugRuntimeClasspath -> androidx.compose:compose-bom:2024.09.03 -> androidx.compose.ui:ui-util-android:1.7.3
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1385536Z :app:debugRuntimeClasspath -> androidx.compose:compose-bom:2024.09.03 -> androidx.compose.ui:ui-graphics:1.7.3
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1387328Z :app:debugRuntimeClasspath -> androidx.compose:compose-bom:2024.09.03 -> androidx.compose.ui:ui-graphics-android:1.7.3
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1388794Z :app:debugRuntimeClasspath -> androidx.compose:compose-bom:2024.09.03 -> androidx.compose.ui:ui-unit:1.7.3
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1390420Z :app:debugRuntimeClasspath -> androidx.compose:compose-bom:2024.09.03 -> androidx.compose.ui:ui-unit-android:1.7.3
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1391850Z :app:debugRuntimeClasspath -> androidx.compose:compose-bom:2024.09.03 -> androidx.compose.ui:ui-text:1.7.3
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1393271Z :app:debugRuntimeClasspath -> androidx.compose:compose-bom:2024.09.03 -> androidx.compose.ui:ui-text-android:1.7.3
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1394969Z :app:debugRuntimeClasspath -> androidx.compose:compose-bom:2024.09.03 -> androidx.compose.ui:ui-text-android:1.7.3 -> androidx.emoji2:emoji2:1.3.0
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1396630Z :app:debugRuntimeClasspath -> androidx.compose:compose-bom:2024.09.03 -> androidx.compose.ui:ui-tooling-data:1.7.3
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1398410Z :app:debugRuntimeClasspath -> androidx.compose:compose-bom:2024.09.03 -> androidx.compose.ui:ui-tooling-data-android:1.7.3
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1399668Z :app:debugRuntimeClasspath -> androidx.compose.ui:ui-tooling-preview:1.7.3
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1401217Z :app:debugRuntimeClasspath -> androidx.compose:compose-bom:2024.09.03 -> androidx.compose.ui:ui-tooling-preview-android:1.7.3
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1403118Z :app:debugRuntimeClasspath -> androidx.compose:compose-bom:2024.09.03 -> androidx.compose.ui:ui-graphics-android:1.7.3 -> androidx.graphics:graphics-path:1.0.1
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1405310Z :app:debugRuntimeClasspath -> androidx.compose:compose-bom:2024.09.03 -> androidx.compose.ui:ui-android:1.7.3 -> androidx.customview:customview-poolingcontainer:1.0.0
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1406905Z :app:debugRuntimeClasspath -> androidx.compose.foundation:foundation:1.7.3
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1408504Z :app:debugRuntimeClasspath -> androidx.compose:compose-bom:2024.09.03 -> androidx.compose.foundation:foundation-android:1.7.3
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1410801Z :app:debugRuntimeClasspath -> androidx.compose:compose-bom:2024.09.03 -> androidx.compose.animation:animation:1.7.3
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1412803Z :app:debugRuntimeClasspath -> androidx.compose:compose-bom:2024.09.03 -> androidx.compose.animation:animation-android:1.7.3
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1414798Z :app:debugRuntimeClasspath -> androidx.compose:compose-bom:2024.09.03 -> androidx.compose.animation:animation-core:1.7.3
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1416561Z :app:debugRuntimeClasspath -> androidx.compose:compose-bom:2024.09.03 -> androidx.compose.animation:animation-core-android:1.7.3
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1418535Z :app:debugRuntimeClasspath -> androidx.compose:compose-bom:2024.09.03 -> androidx.compose.foundation:foundation-layout:1.7.3
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1420746Z :app:debugRuntimeClasspath -> androidx.compose:compose-bom:2024.09.03 -> androidx.compose.foundation:foundation-layout-android:1.7.3
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1422647Z :app:debugRuntimeClasspath -> androidx.compose:compose-bom:2024.09.03 -> androidx.compose.material:material:1.7.3
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1424374Z :app:debugRuntimeClasspath -> androidx.compose:compose-bom:2024.09.03 -> androidx.compose.material:material-android:1.7.3
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1426157Z :app:debugRuntimeClasspath -> androidx.compose:compose-bom:2024.09.03 -> androidx.compose.material:material-ripple:1.7.3
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1427978Z :app:debugRuntimeClasspath -> androidx.compose:compose-bom:2024.09.03 -> androidx.compose.material:material-ripple-android:1.7.3
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1429355Z :app:debugRuntimeClasspath -> androidx.compose:compose-bom:2024.09.03
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1430637Z :app:debugRuntimeClasspath -> androidx.compose.material3:material3:1.3.0
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1432086Z :app:debugRuntimeClasspath -> androidx.compose:compose-bom:2024.09.03 -> androidx.compose.material3:material3-android:1.3.0
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1433836Z :app:debugRuntimeClasspath -> androidx.compose:compose-bom:2024.09.03 -> androidx.compose.material:material-icons-core:1.7.3
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1435664Z :app:debugRuntimeClasspath -> androidx.compose:compose-bom:2024.09.03 -> androidx.compose.material:material-icons-core-android:1.7.3
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1437176Z 	at com.android.builder.errors.IssueReporter.reportError(IssueReporter.kt:118)
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1438440Z 	at com.android.builder.errors.IssueReporter.reportError$default(IssueReporter.kt:114)
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1440615Z 	at com.android.build.gradle.internal.dependency.AndroidXDependencyCheck$AndroidXDisabledJetifierDisabled.execute(AndroidXDependencyCheck.kt:72)
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1442993Z 	at com.android.build.gradle.internal.dependency.AndroidXDependencyCheck$AndroidXDisabledJetifierDisabled.execute(AndroidXDependencyCheck.kt:40)
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1445238Z 	at org.gradle.internal.code.DefaultUserCodeApplicationContext$CurrentApplication$1.execute(DefaultUserCodeApplicationContext.java:124)
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1447381Z 	at org.gradle.internal.event.BroadcastDispatch$ActionInvocationHandler.dispatch(BroadcastDispatch.java:99)
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1449066Z 	at org.gradle.internal.event.BroadcastDispatch$ActionInvocationHandler.dispatch(BroadcastDispatch.java:87)
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1450959Z 	at org.gradle.internal.event.AbstractBroadcastDispatch.dispatch(AbstractBroadcastDispatch.java:44)
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1452635Z 	at org.gradle.internal.event.BroadcastDispatch$SingletonDispatch.dispatch(BroadcastDispatch.java:268)
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1454290Z 	at org.gradle.internal.event.BroadcastDispatch$SingletonDispatch.dispatch(BroadcastDispatch.java:170)
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1455961Z 	at org.gradle.internal.event.AbstractBroadcastDispatch.dispatch(AbstractBroadcastDispatch.java:84)
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1457646Z 	at org.gradle.internal.event.AbstractBroadcastDispatch.dispatch(AbstractBroadcastDispatch.java:70)
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1459384Z 	at org.gradle.internal.event.BroadcastDispatch$CompositeDispatch.dispatch(BroadcastDispatch.java:380)
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1461361Z 	at org.gradle.internal.event.BroadcastDispatch$CompositeDispatch.dispatch(BroadcastDispatch.java:272)
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1462792Z 	at org.gradle.internal.event.ListenerBroadcast.dispatch(ListenerBroadcast.java:153)
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1464068Z 	at org.gradle.internal.event.ListenerBroadcast.dispatch(ListenerBroadcast.java:38)
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1465696Z 	at org.gradle.internal.dispatch.ProxyDispatchAdapter$DispatchingInvocationHandler.invoke(ProxyDispatchAdapter.java:92)
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1467067Z 	at jdk.proxy1/jdk.proxy1.$Proxy84.afterResolve(Unknown Source)
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1468448Z 	at org.gradle.api.internal.artifacts.configurations.DefaultConfiguration$1.call(DefaultConfiguration.java:800)
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1470669Z 	at org.gradle.api.internal.artifacts.configurations.DefaultConfiguration$1.call(DefaultConfiguration.java:777)
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1472701Z 	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:209)
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1474954Z 	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:204)
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1476987Z 	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:66)
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1478738Z 	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:59)
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1480690Z 	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:166)
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1482381Z 	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:59)
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1484027Z 	at org.gradle.internal.operations.DefaultBuildOperationRunner.call(DefaultBuildOperationRunner.java:53)
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1486080Z 	at org.gradle.api.internal.artifacts.configurations.DefaultConfiguration.resolveGraphInBuildOperation(DefaultConfiguration.java:777)
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1488510Z 	at org.gradle.api.internal.artifacts.configurations.DefaultConfiguration.lambda$resolveExclusivelyIfRequired$5(DefaultConfiguration.java:769)
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1491029Z 	at org.gradle.api.internal.project.DefaultProjectStateRegistry$CalculatedModelValueImpl.update(DefaultProjectStateRegistry.java:509)
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1493278Z 	at org.gradle.api.internal.artifacts.configurations.DefaultConfiguration.resolveExclusivelyIfRequired(DefaultConfiguration.java:764)
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1495676Z 	at org.gradle.api.internal.artifacts.configurations.DefaultConfiguration.resolveGraphIfRequired(DefaultConfiguration.java:757)
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1497856Z 	at org.gradle.api.internal.artifacts.configurations.DefaultConfiguration.access$1200(DefaultConfiguration.java:159)
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1500441Z 	at org.gradle.api.internal.artifacts.configurations.DefaultConfiguration$ResolverResultsResolutionResultProvider.getValue(DefaultConfiguration.java:731)
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1503717Z 	at org.gradle.api.internal.artifacts.configurations.DefaultConfiguration$ResolverResultsResolutionResultProvider.getValue(DefaultConfiguration.java:692)
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1506195Z 	at org.gradle.api.internal.artifacts.configurations.ResolutionResultProvider$1.getValue(ResolutionResultProvider.java:53)
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1508632Z 	at org.gradle.api.internal.artifacts.configurations.ResolutionBackedFileCollection.getSelectedArtifacts(ResolutionBackedFileCollection.java:95)
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1511430Z 	at org.gradle.api.internal.artifacts.configurations.ResolutionBackedFileCollection.visitContents(ResolutionBackedFileCollection.java:73)
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1513452Z 	at org.gradle.api.internal.file.AbstractFileCollection.visitStructure(AbstractFileCollection.java:360)
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1515187Z 	at org.gradle.api.internal.file.CompositeFileCollection.lambda$visitContents$0(CompositeFileCollection.java:113)
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1516763Z 	at org.gradle.api.internal.file.collections.UnpackingVisitor.add(UnpackingVisitor.java:67)
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1518171Z 	at org.gradle.api.internal.file.collections.UnpackingVisitor.add(UnpackingVisitor.java:92)
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1520016Z 	at org.gradle.api.internal.file.DefaultFileCollectionFactory$ResolvingFileCollection.visitChildren(DefaultFileCollectionFactory.java:306)
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1522262Z 	at org.gradle.api.internal.file.CompositeFileCollection.visitContents(CompositeFileCollection.java:113)
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1523865Z 	at org.gradle.api.internal.file.AbstractFileCollection.visitStructure(AbstractFileCollection.java:360)
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1525570Z 	at org.gradle.api.internal.file.CompositeFileCollection.lambda$visitContents$0(CompositeFileCollection.java:113)
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1527463Z 	at org.gradle.api.internal.tasks.PropertyFileCollection.visitChildren(PropertyFileCollection.java:48)
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1529066Z 	at org.gradle.api.internal.file.CompositeFileCollection.visitContents(CompositeFileCollection.java:113)
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1530857Z 	at org.gradle.api.internal.file.AbstractFileCollection.visitStructure(AbstractFileCollection.java:360)
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1532800Z 	at org.gradle.internal.fingerprint.impl.DefaultFileCollectionSnapshotter.snapshot(DefaultFileCollectionSnapshotter.java:47)
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1535103Z 	at org.gradle.internal.execution.impl.DefaultInputFingerprinter$InputCollectingVisitor.visitInputFileProperty(DefaultInputFingerprinter.java:133)
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1537041Z 	at org.gradle.api.internal.tasks.execution.TaskExecution.visitRegularInputs(TaskExecution.java:324)
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1538978Z 	at org.gradle.internal.execution.impl.DefaultInputFingerprinter.fingerprintInputProperties(DefaultInputFingerprinter.java:63)
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1542040Z 	at org.gradle.internal.execution.steps.AbstractCaptureStateBeforeExecutionStep.captureExecutionStateWithOutputs(AbstractCaptureStateBeforeExecutionStep.java:109)
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1544966Z 	at org.gradle.internal.execution.steps.AbstractCaptureStateBeforeExecutionStep.lambda$captureExecutionState$0(AbstractCaptureStateBeforeExecutionStep.java:74)
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1547089Z 	at org.gradle.internal.execution.steps.BuildOperationStep$1.call(BuildOperationStep.java:37)
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1549021Z 	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:209)
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1551729Z 	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:204)
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1553799Z 	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:66)
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1555573Z 	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:59)
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1557294Z 	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:166)
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1558984Z 	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:59)
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1561210Z 	at org.gradle.internal.operations.DefaultBuildOperationRunner.call(DefaultBuildOperationRunner.java:53)
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1562747Z 	at org.gradle.internal.execution.steps.BuildOperationStep.operation(BuildOperationStep.java:34)
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1564898Z 	at org.gradle.internal.execution.steps.AbstractCaptureStateBeforeExecutionStep.captureExecutionState(AbstractCaptureStateBeforeExecutionStep.java:69)
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1567496Z 	at org.gradle.internal.execution.steps.AbstractCaptureStateBeforeExecutionStep.execute(AbstractCaptureStateBeforeExecutionStep.java:62)
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1569942Z 	at org.gradle.internal.execution.steps.AbstractCaptureStateBeforeExecutionStep.execute(AbstractCaptureStateBeforeExecutionStep.java:43)
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1572547Z 	at org.gradle.internal.execution.steps.AbstractSkipEmptyWorkStep.executeWithNonEmptySources(AbstractSkipEmptyWorkStep.java:125)
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1574520Z 	at org.gradle.internal.execution.steps.AbstractSkipEmptyWorkStep.execute(AbstractSkipEmptyWorkStep.java:56)
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1576250Z 	at org.gradle.internal.execution.steps.AbstractSkipEmptyWorkStep.execute(AbstractSkipEmptyWorkStep.java:36)
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1578183Z 	at org.gradle.internal.execution.steps.legacy.MarkSnapshottingInputsStartedStep.execute(MarkSnapshottingInputsStartedStep.java:38)
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1580395Z 	at org.gradle.internal.execution.steps.LoadPreviousExecutionStateStep.execute(LoadPreviousExecutionStateStep.java:36)
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1582302Z 	at org.gradle.internal.execution.steps.LoadPreviousExecutionStateStep.execute(LoadPreviousExecutionStateStep.java:23)
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1584290Z 	at org.gradle.internal.execution.steps.HandleStaleOutputsStep.execute(HandleStaleOutputsStep.java:75)
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1585846Z 	at org.gradle.internal.execution.steps.HandleStaleOutputsStep.execute(HandleStaleOutputsStep.java:41)
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1587588Z 	at org.gradle.internal.execution.steps.AssignMutableWorkspaceStep.lambda$execute$0(AssignMutableWorkspaceStep.java:35)
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1589217Z 	at org.gradle.api.internal.tasks.execution.TaskExecution$4.withWorkspace(TaskExecution.java:289)
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1591001Z 	at org.gradle.internal.execution.steps.AssignMutableWorkspaceStep.execute(AssignMutableWorkspaceStep.java:31)
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1592727Z 	at org.gradle.internal.execution.steps.AssignMutableWorkspaceStep.execute(AssignMutableWorkspaceStep.java:22)
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1594282Z 	at org.gradle.internal.execution.steps.ChoosePipelineStep.execute(ChoosePipelineStep.java:40)
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1595704Z 	at org.gradle.internal.execution.steps.ChoosePipelineStep.execute(ChoosePipelineStep.java:23)
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1597539Z 	at org.gradle.internal.execution.steps.ExecuteWorkBuildOperationFiringStep.lambda$execute$2(ExecuteWorkBuildOperationFiringStep.java:67)
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1599657Z 	at org.gradle.internal.execution.steps.ExecuteWorkBuildOperationFiringStep.execute(ExecuteWorkBuildOperationFiringStep.java:67)
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1602223Z 	at org.gradle.internal.execution.steps.ExecuteWorkBuildOperationFiringStep.execute(ExecuteWorkBuildOperationFiringStep.java:39)
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1604176Z 	at org.gradle.internal.execution.steps.IdentityCacheStep.execute(IdentityCacheStep.java:46)
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1605556Z 	at org.gradle.internal.execution.steps.IdentityCacheStep.execute(IdentityCacheStep.java:34)
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1606903Z 	at org.gradle.internal.execution.steps.IdentifyStep.execute(IdentifyStep.java:48)
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1608085Z 	at org.gradle.internal.execution.steps.IdentifyStep.execute(IdentifyStep.java:35)
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1609460Z 	at org.gradle.internal.execution.impl.DefaultExecutionEngine$1.execute(DefaultExecutionEngine.java:61)
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1611402Z 	at org.gradle.api.internal.tasks.execution.ExecuteActionsTaskExecuter.executeIfValid(ExecuteActionsTaskExecuter.java:127)
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1613197Z 	at org.gradle.api.internal.tasks.execution.ExecuteActionsTaskExecuter.execute(ExecuteActionsTaskExecuter.java:116)
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1615254Z 	at org.gradle.api.internal.tasks.execution.FinalizePropertiesTaskExecuter.execute(FinalizePropertiesTaskExecuter.java:46)
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1617340Z 	at org.gradle.api.internal.tasks.execution.ResolveTaskExecutionModeExecuter.execute(ResolveTaskExecutionModeExecuter.java:51)
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1619398Z 	at org.gradle.api.internal.tasks.execution.SkipTaskWithNoActionsExecuter.execute(SkipTaskWithNoActionsExecuter.java:57)
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1621448Z 	at org.gradle.api.internal.tasks.execution.SkipOnlyIfTaskExecuter.execute(SkipOnlyIfTaskExecuter.java:74)
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1623271Z 	at org.gradle.api.internal.tasks.execution.CatchExceptionTaskExecuter.execute(CatchExceptionTaskExecuter.java:36)
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1625122Z 	at org.gradle.api.internal.tasks.execution.EventFiringTaskExecuter$1.executeTask(EventFiringTaskExecuter.java:77)
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1626889Z 	at org.gradle.api.internal.tasks.execution.EventFiringTaskExecuter$1.call(EventFiringTaskExecuter.java:55)
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1628591Z 	at org.gradle.api.internal.tasks.execution.EventFiringTaskExecuter$1.call(EventFiringTaskExecuter.java:52)
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1630743Z 	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:209)
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1633066Z 	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:204)
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1635101Z 	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:66)
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1637172Z 	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:59)
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1639002Z 	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:166)
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1640995Z 	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:59)
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1642808Z 	at org.gradle.internal.operations.DefaultBuildOperationRunner.call(DefaultBuildOperationRunner.java:53)
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1644447Z 	at org.gradle.api.internal.tasks.execution.EventFiringTaskExecuter.execute(EventFiringTaskExecuter.java:52)
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1645853Z 	at org.gradle.execution.plan.LocalTaskNodeExecutor.execute(LocalTaskNodeExecutor.java:42)
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1647474Z 	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$InvokeNodeExecutorsAction.execute(DefaultTaskExecutionGraph.java:331)
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1649484Z 	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$InvokeNodeExecutorsAction.execute(DefaultTaskExecutionGraph.java:318)
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1652041Z 	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$BuildOperationAwareExecutionAction.lambda$execute$0(DefaultTaskExecutionGraph.java:314)
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1654094Z 	at org.gradle.internal.operations.CurrentBuildOperationRef.with(CurrentBuildOperationRef.java:85)
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1656204Z 	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$BuildOperationAwareExecutionAction.execute(DefaultTaskExecutionGraph.java:314)
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1658631Z 	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$BuildOperationAwareExecutionAction.execute(DefaultTaskExecutionGraph.java:303)
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1660826Z 	at org.gradle.execution.plan.DefaultPlanExecutor$ExecutorWorker.execute(DefaultPlanExecutor.java:459)
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1663040Z 	at org.gradle.execution.plan.DefaultPlanExecutor$ExecutorWorker.run(DefaultPlanExecutor.java:376)
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1664751Z 	at org.gradle.internal.concurrent.ExecutorPolicy$CatchAndRecordFailures.onExecute(ExecutorPolicy.java:64)
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1666373Z 	at org.gradle.internal.concurrent.AbstractManagedExecutor$1.run(AbstractManagedExecutor.java:48)
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1667152Z 
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1667168Z 
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.1667632Z BUILD FAILED in 1m 18s
+Build Mesh Chat Debug APK	Build debug APK	2026-07-01T20:03:55.3275761Z ##[error]Process completed with exit code 1.
