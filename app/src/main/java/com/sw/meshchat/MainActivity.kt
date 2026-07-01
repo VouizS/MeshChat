@@ -98,7 +98,7 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
-private const val APP_VERSION = "v0.2.0"
+private const val APP_VERSION = "v0.2.1"
 private const val SERVICE_ID = "com.sw.meshchat.NEARBY_SERVICE"
 
 data class Conversation(
@@ -272,8 +272,22 @@ class MeshNearbyController(private val context: Context) {
     }
 
     fun startOffline() {
-        startAdvertising()
-        startDiscovery()
+        if (isAdvertising && isDiscovering) {
+            addLog("Modo offline já está ativo")
+            return
+        }
+
+        if (!isAdvertising) {
+            startAdvertising()
+        } else {
+            addLog("Visibilidade já ativa")
+        }
+
+        if (!isDiscovering) {
+            startDiscovery()
+        } else {
+            addLog("Scanner já ativo")
+        }
     }
 
     fun stopOffline() {
@@ -287,6 +301,15 @@ class MeshNearbyController(private val context: Context) {
         peers = peers.map { it.copy(status = "Parado") }
 
         addLog("Modo offline parado")
+    }
+
+    fun clearEvents() {
+        logs = emptyList()
+    }
+
+    fun clearNearbyMessages() {
+        nearbyMessages = emptyList()
+        addLog("Mensagens locais limpas")
     }
 
     private fun startAdvertising() {
@@ -303,8 +326,18 @@ class MeshNearbyController(private val context: Context) {
             isAdvertising = true
             addLog("Visível como $localName")
         }.addOnFailureListener { error ->
-            isAdvertising = false
-            addLog("Falha ao ficar visível: ${error.message ?: "sem detalhe"}")
+            val detail = error.message ?: "sem detalhe"
+
+            if (
+                detail.contains("STATUS_ALREADY_ADVERTISING", ignoreCase = true) ||
+                detail.contains("8001")
+            ) {
+                isAdvertising = true
+                addLog("Visibilidade já estava ativa")
+            } else {
+                isAdvertising = false
+                addLog("Falha ao ficar visível: $detail")
+            }
         }
     }
 
@@ -321,8 +354,18 @@ class MeshNearbyController(private val context: Context) {
             isDiscovering = true
             addLog("Scanner iniciado")
         }.addOnFailureListener { error ->
-            isDiscovering = false
-            addLog("Falha no scanner: ${error.message ?: "sem detalhe"}")
+            val detail = error.message ?: "sem detalhe"
+
+            if (
+                detail.contains("STATUS_ALREADY_DISCOVERING", ignoreCase = true) ||
+                detail.contains("8002")
+            ) {
+                isDiscovering = true
+                addLog("Scanner já estava ativo")
+            } else {
+                isDiscovering = false
+                addLog("Falha no scanner: $detail")
+            }
         }
     }
 
@@ -338,7 +381,7 @@ class MeshNearbyController(private val context: Context) {
         )
 
         if (connectedEndpointIds.isEmpty()) {
-            addLog("Mensagem criada, mas nenhum peer está conectado")
+            addLog("Nenhum peer conectado. A mensagem ficou apenas local nesta sessão")
             return
         }
 
@@ -701,7 +744,7 @@ fun HeroStatusCard() {
             )
 
             Text(
-                text = "Primeira camada offline real: permissões, descoberta, visibilidade, conexão e envio de texto curto entre Androids próximos.",
+                text = "Nearby estabilizado: permissões, descoberta, visibilidade, conexão, envio rápido e estados mais claros para testes offline.",
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onPrimaryContainer
             )
@@ -885,10 +928,17 @@ fun NearbyScreen(
                 ) {
                     FilledTonalButton(
                         onClick = { nearbyController.startOffline() },
+                        enabled = !(nearbyController.isAdvertising && nearbyController.isDiscovering),
                         modifier = Modifier.weight(1f),
                         shape = RoundedCornerShape(20.dp)
                     ) {
-                        Text("Iniciar offline")
+                        Text(
+                            if (nearbyController.isAdvertising || nearbyController.isDiscovering) {
+                                "Offline ativo"
+                            } else {
+                                "Iniciar offline"
+                            }
+                        )
                     }
 
                     FilledTonalButton(
@@ -999,11 +1049,23 @@ fun NearbyScreen(
         }
 
         item {
-            Text(
-                text = "Eventos",
-                style = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight.Bold
-            )
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = "Eventos",
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier.weight(1f)
+                )
+
+                if (nearbyController.logs.isNotEmpty()) {
+                    TextButton(onClick = { nearbyController.clearEvents() }) {
+                        Text("Limpar")
+                    }
+                }
+            }
         }
 
         if (nearbyController.logs.isEmpty()) {
@@ -1164,8 +1226,8 @@ fun NetworkScreen(
         item {
             MeshMetricCard(
                 title = "Próximo alvo",
-                value = "v0.2.1",
-                detail = "Melhorar conexão, reconexão e experiência entre dois aparelhos."
+                value = "v0.2.2",
+                detail = "Salvar dispositivos encontrados como contatos Mesh persistentes."
             )
         }
     }
