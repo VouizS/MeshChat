@@ -101,7 +101,7 @@ import java.util.UUID
 import org.json.JSONArray
 import org.json.JSONObject
 
-private const val APP_VERSION = "v0.2.2"
+private const val APP_VERSION = "v0.2.3"
 private const val SERVICE_ID = "com.sw.meshchat.NEARBY_SERVICE"
 
 data class Conversation(
@@ -138,6 +138,12 @@ data class MeshSavedContact(
     val name: String,
     val lastSeen: String,
     val status: String
+)
+
+data class MeshContactMessage(
+    val text: String,
+    val mine: Boolean,
+    val time: String
 )
 
 enum class MeshTab(
@@ -240,10 +246,65 @@ class MeshContactStore(private val context: Context) {
     }
 }
 
+class MeshMessageStore(private val context: Context) {
+    private val prefs = context.getSharedPreferences("mesh_message_store", Context.MODE_PRIVATE)
+
+    fun loadMessages(contactKey: String): List<MeshContactMessage> {
+        val raw = prefs.getString("messages_$contactKey", "[]") ?: "[]"
+
+        return try {
+            val array = JSONArray(raw)
+            val result = mutableListOf<MeshContactMessage>()
+
+            for (index in 0 until array.length()) {
+                val item = array.getJSONObject(index)
+                result.add(
+                    MeshContactMessage(
+                        text = item.optString("text"),
+                        mine = item.optBoolean("mine"),
+                        time = item.optString("time")
+                    )
+                )
+            }
+
+            result
+        } catch (_: Exception) {
+            emptyList()
+        }
+    }
+
+    fun addMessage(contactKey: String, text: String, mine: Boolean, time: String) {
+        val current = loadMessages(contactKey).takeLast(100).toMutableList()
+        current.add(
+            MeshContactMessage(
+                text = text,
+                mine = mine,
+                time = time
+            )
+        )
+
+        val array = JSONArray()
+        current.forEach { message ->
+            val item = JSONObject()
+            item.put("text", message.text)
+            item.put("mine", message.mine)
+            item.put("time", message.time)
+            array.put(item)
+        }
+
+        prefs.edit().putString("messages_$contactKey", array.toString()).apply()
+    }
+
+    fun clearMessages(contactKey: String) {
+        prefs.edit().remove("messages_$contactKey").apply()
+    }
+}
+
 class MeshNearbyController(private val context: Context) {
     private val client: ConnectionsClient = Nearby.getConnectionsClient(context)
     private val strategy: Strategy = Strategy.P2P_CLUSTER
     private val contactStore = MeshContactStore(context)
+    private val messageStore = MeshMessageStore(context)
     private val localId: String = contactStore.localId()
     private val localName: String = "Mesh-${Build.MODEL.take(10)}-${localId.take(4)}"
 
@@ -251,6 +312,9 @@ class MeshNearbyController(private val context: Context) {
     private val peerNames = mutableMapOf<String, String>()
 
     var savedContacts by mutableStateOf(contactStore.loadContacts())
+        private set
+
+    var conversationVersion by mutableStateOf(0)
         private set
 
     var isAdvertising by mutableStateOf(false)
@@ -288,6 +352,7 @@ class MeshNearbyController(private val context: Context) {
                     time = now(),
                     from = from
                 )
+                saveMeshMessage(from, text, false)
                 addLog("Mensagem recebida de $from")
             }
         }
@@ -491,6 +556,50 @@ class MeshNearbyController(private val context: Context) {
         }
     }
 
+    fun messagesFor(contact: MeshSavedContact): List<MeshContactMessage> {
+        return messageStore.loadMessages(contact.key)
+    }
+
+    fun sendToSavedContact(contact: MeshSavedContact, text: String) {
+        val clean = text.trim()
+        if (clean.isEmpty()) return
+
+        messageStore.addMessage(contact.key, clean, true, now())
+        conversationVersion++
+
+        val matchingEndpointIds = peerNames
+            .filter { item -> item.value == contact.name && connectedEndpointIds.contains(item.key) }
+            .keys
+
+        if (matchingEndpointIds.isEmpty()) {
+            addLog("Mensagem salva para ${contact.name}. Contato não está conectado agora")
+            return
+        }
+
+        matchingEndpointIds.forEach { endpointId ->
+            client.sendPayload(
+                endpointId,
+                Payload.fromBytes(clean.toByteArray(Charsets.UTF_8))
+            ).addOnSuccessListener {
+                addLog("Mensagem enviada para ${contact.name}")
+            }.addOnFailureListener { error ->
+                addLog("Falha ao enviar para ${contact.name}: ${error.message ?: "sem detalhe"}")
+            }
+        }
+    }
+
+    fun clearConversation(contact: MeshSavedContact) {
+        messageStore.clearMessages(contact.key)
+        conversationVersion++
+        addLog("Histórico limpo: ${contact.name}")
+    }
+
+    private fun saveMeshMessage(contactName: String, text: String, mine: Boolean) {
+        val contact = contactStore.loadContacts().firstOrNull { it.name == contactName } ?: return
+        messageStore.addMessage(contact.key, text, mine, now())
+        conversationVersion++
+    }
+
     private fun saveMeshContact(name: String, status: String) {
         contactStore.upsertContact(name, status)
         savedContacts = contactStore.loadContacts()
@@ -638,7 +747,19 @@ fun MeshChatApp() {
     var selectedConversationId by rememberSaveable { mutableStateOf<Int?>(null) }
     val selectedConversation = conversations.firstOrNull { it.id == selectedConversationId }
 
+    var selectedSavedContactKey by rememberSaveable { mutableStateOf<String?>(null) }
+    val selectedSavedContact = nearbyController.savedContacts.firstOrNull { it.key == selectedSavedContactKey }
+
     var showNewChatDialog by rememberSaveable { mutableStateOf(false) }
+
+    if (selectedSavedContact != null) {
+        ContactMeshChatScreen(
+            contact = selectedSavedContact,
+            nearbyController = nearbyController,
+            onBack = { selectedSavedContactKey = null }
+        )
+        return
+    }
 
     if (selectedConversation != null) {
         ChatScreen(
@@ -664,6 +785,7 @@ fun MeshChatApp() {
                 onTabSelected = {
                     selectedTabName = it.name
                     selectedConversationId = null
+                    selectedSavedContactKey = null
                 }
             )
         },
@@ -685,6 +807,7 @@ fun MeshChatApp() {
                 modifier = Modifier.padding(padding),
                 conversations = conversations,
                 savedContacts = nearbyController.savedContacts,
+                onOpenSavedContact = { selectedSavedContactKey = it.key },
                 onOpenConversation = { selectedConversationId = it.id }
             )
 
@@ -770,6 +893,7 @@ fun ConversationListScreen(
     modifier: Modifier,
     conversations: List<Conversation>,
     savedContacts: List<MeshSavedContact>,
+    onOpenSavedContact: (MeshSavedContact) -> Unit,
     onOpenConversation: (Conversation) -> Unit
 ) {
     var search by rememberSaveable { mutableStateOf("") }
@@ -844,7 +968,7 @@ fun HeroStatusCard() {
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             Text(
-                text = "Contatos Mesh v0.2.2",
+                text = "Conversas Mesh v0.2.3",
                 style = MaterialTheme.typography.headlineSmall,
                 fontWeight = FontWeight.Bold,
                 color = MaterialTheme.colorScheme.onPrimaryContainer
@@ -949,9 +1073,14 @@ fun ConversationCard(
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SavedContactCard(contact: MeshSavedContact) {
+fun SavedContactCard(
+    contact: MeshSavedContact,
+    onClick: () -> Unit
+) {
     ElevatedCard(
+        onClick = onClick,
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(24.dp)
     ) {
@@ -1324,7 +1453,7 @@ fun NetworkScreen(
         item {
             StatusPanel(
                 title = "Rede Mesh",
-                body = "A v0.2.2 usa Nearby Connections para validar descoberta, conexão e envio de texto offline entre aparelhos próximos.",
+                body = "A v0.2.3 usa Nearby Connections para validar descoberta, conexão e envio de texto offline entre aparelhos próximos.",
                 primary = if (nearbyController.isConnected) "Conectado" else "Offline",
                 secondary = "Peers: ${nearbyController.connectedCount}"
             )
@@ -1391,8 +1520,8 @@ fun NetworkScreen(
         item {
             MeshMetricCard(
                 title = "Próximo alvo",
-                value = "v0.2.3",
-                detail = "Criar conversas persistentes associadas aos contatos Mesh."
+                value = "v0.2.4",
+                detail = "Adicionar indicadores de qualidade: verde, laranja, vermelho e offline."
             )
         }
     }
@@ -1415,7 +1544,7 @@ fun SettingsScreen(
         item {
             StatusPanel(
                 title = "Configurações",
-                body = "Preferências iniciais do Mesh Chat. Contatos Mesh salvos ativados na v0.2.2.",
+                body = "Preferências iniciais do Mesh Chat. Conversas persistentes dos Contatos Mesh ativadas na v0.2.3.",
                 primary = APP_VERSION,
                 secondary = "Debug build"
             )
@@ -1659,6 +1788,153 @@ fun NewConversationDialog(
             }
         }
     )
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun ContactMeshChatScreen(
+    contact: MeshSavedContact,
+    nearbyController: MeshNearbyController,
+    onBack: () -> Unit
+) {
+    val version = nearbyController.conversationVersion
+    val messages = remember(version, contact.key) {
+        nearbyController.messagesFor(contact)
+    }
+
+    var input by rememberSaveable(contact.key) { mutableStateOf("") }
+
+    Scaffold(
+        topBar = {
+            CenterAlignedTopAppBar(
+                title = {
+                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                        Text(
+                            text = contact.name,
+                            fontWeight = FontWeight.Bold,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis
+                        )
+                        Text(
+                            text = "${contact.status} • Último contato: ${contact.lastSeen}",
+                            style = MaterialTheme.typography.labelMedium,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis
+                        )
+                    }
+                },
+                navigationIcon = {
+                    IconButton(onClick = onBack) {
+                        Icon(
+                            imageVector = Icons.Filled.ArrowBack,
+                            contentDescription = "Voltar"
+                        )
+                    }
+                },
+                actions = {
+                    if (messages.isNotEmpty()) {
+                        TextButton(onClick = { nearbyController.clearConversation(contact) }) {
+                            Text("Limpar")
+                        }
+                    }
+                }
+            )
+        },
+        bottomBar = {
+            MessageInputBar(
+                input = input,
+                onInputChange = { input = it },
+                onSend = {
+                    val text = input.trim()
+                    if (text.isNotEmpty()) {
+                        nearbyController.sendToSavedContact(contact, text)
+                        input = ""
+                    }
+                }
+            )
+        }
+    ) { padding ->
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(padding),
+            contentPadding = PaddingValues(16.dp),
+            verticalArrangement = Arrangement.spacedBy(10.dp)
+        ) {
+            item {
+                StatusPanel(
+                    title = "Conversa Mesh salva",
+                    body = "Este contato foi criado a partir de uma conexão Nearby. Se ele estiver próximo/conectado, a mensagem tenta sair pelo canal offline. Se não estiver, fica salva localmente.",
+                    primary = contact.status,
+                    secondary = "Histórico local"
+                )
+            }
+
+            if (messages.isEmpty()) {
+                item {
+                    MeshMetricCard(
+                        title = "Sem mensagens ainda",
+                        value = "0",
+                        detail = "Envie uma mensagem para iniciar o histórico deste contato Mesh."
+                    )
+                }
+            } else {
+                items(messages) { message ->
+                    MeshContactMessageBubble(message = message)
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun MeshContactMessageBubble(message: MeshContactMessage) {
+    Box(
+        modifier = Modifier.fillMaxWidth(),
+        contentAlignment = if (message.mine) Alignment.CenterEnd else Alignment.CenterStart
+    ) {
+        Surface(
+            modifier = Modifier.widthIn(max = 330.dp),
+            shape = RoundedCornerShape(
+                topStart = 24.dp,
+                topEnd = 24.dp,
+                bottomStart = if (message.mine) 24.dp else 6.dp,
+                bottomEnd = if (message.mine) 6.dp else 24.dp
+            ),
+            color = if (message.mine) {
+                MaterialTheme.colorScheme.primary
+            } else {
+                MaterialTheme.colorScheme.surfaceVariant
+            }
+        ) {
+            Column(
+                modifier = Modifier.padding(horizontal = 14.dp, vertical = 10.dp),
+                verticalArrangement = Arrangement.spacedBy(4.dp)
+            ) {
+                Text(
+                    text = message.text,
+                    color = if (message.mine) {
+                        MaterialTheme.colorScheme.onPrimary
+                    } else {
+                        MaterialTheme.colorScheme.onSurfaceVariant
+                    },
+                    style = MaterialTheme.typography.bodyMedium
+                )
+
+                Text(
+                    text = message.time,
+                    color = if (message.mine) {
+                        MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.78f)
+                    } else {
+                        MaterialTheme.colorScheme.onSurfaceVariant
+                    },
+                    style = MaterialTheme.typography.labelSmall,
+                    modifier = Modifier.align(Alignment.End)
+                )
+            }
+        }
+    }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
