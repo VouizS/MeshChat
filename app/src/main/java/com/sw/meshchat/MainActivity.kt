@@ -97,8 +97,11 @@ import com.google.android.gms.nearby.connection.Strategy
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
+import java.util.UUID
+import org.json.JSONArray
+import org.json.JSONObject
 
-private const val APP_VERSION = "v0.2.1"
+private const val APP_VERSION = "v0.2.2"
 private const val SERVICE_ID = "com.sw.meshchat.NEARBY_SERVICE"
 
 data class Conversation(
@@ -130,6 +133,13 @@ data class NearbyTextMessage(
     val from: String
 )
 
+data class MeshSavedContact(
+    val key: String,
+    val name: String,
+    val lastSeen: String,
+    val status: String
+)
+
 enum class MeshTab(
     val label: String,
     val icon: ImageVector
@@ -156,13 +166,92 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+class MeshContactStore(private val context: Context) {
+    private val prefs = context.getSharedPreferences("mesh_contacts_store", Context.MODE_PRIVATE)
+
+    fun localId(): String {
+        val current = prefs.getString("local_id", null)
+        if (!current.isNullOrBlank()) return current
+
+        val created = UUID.randomUUID().toString()
+        prefs.edit().putString("local_id", created).apply()
+        return created
+    }
+
+    fun loadContacts(): List<MeshSavedContact> {
+        val raw = prefs.getString("contacts_json", "[]") ?: "[]"
+
+        return try {
+            val array = JSONArray(raw)
+            val result = mutableListOf<MeshSavedContact>()
+
+            for (index in 0 until array.length()) {
+                val item = array.getJSONObject(index)
+                result.add(
+                    MeshSavedContact(
+                        key = item.optString("key"),
+                        name = item.optString("name"),
+                        lastSeen = item.optString("lastSeen"),
+                        status = item.optString("status")
+                    )
+                )
+            }
+
+            result.filter { it.name.isNotBlank() }
+                .distinctBy { it.key }
+                .sortedBy { it.name.lowercase(Locale.getDefault()) }
+        } catch (_: Exception) {
+            emptyList()
+        }
+    }
+
+    fun upsertContact(name: String, status: String) {
+        val cleanName = name.trim()
+        if (cleanName.isBlank()) return
+
+        val key = cleanName.lowercase(Locale.getDefault())
+        val now = SimpleDateFormat("dd/MM HH:mm", Locale.getDefault()).format(Date())
+
+        val current = loadContacts().filterNot { it.key == key }.toMutableList()
+        current.add(
+            MeshSavedContact(
+                key = key,
+                name = cleanName,
+                lastSeen = now,
+                status = status
+            )
+        )
+
+        val array = JSONArray()
+        current.sortedBy { it.name.lowercase(Locale.getDefault()) }.forEach { contact ->
+            val item = JSONObject()
+            item.put("key", contact.key)
+            item.put("name", contact.name)
+            item.put("lastSeen", contact.lastSeen)
+            item.put("status", contact.status)
+            array.put(item)
+        }
+
+        prefs.edit().putString("contacts_json", array.toString()).apply()
+    }
+
+    fun clearContacts() {
+        prefs.edit().remove("contacts_json").apply()
+    }
+}
+
 class MeshNearbyController(private val context: Context) {
     private val client: ConnectionsClient = Nearby.getConnectionsClient(context)
     private val strategy: Strategy = Strategy.P2P_CLUSTER
-    private val localName: String = "Mesh-${Build.MODEL.take(14)}"
+    private val contactStore = MeshContactStore(context)
+    private val localId: String = contactStore.localId()
+    private val localName: String = "Mesh-${Build.MODEL.take(10)}-${localId.take(4)}"
 
     private val connectedEndpointIds = mutableSetOf<String>()
     private val peerNames = mutableMapOf<String, String>()
+
+    var savedContacts by mutableStateOf(contactStore.loadContacts())
+        private set
 
     var isAdvertising by mutableStateOf(false)
         private set
@@ -211,6 +300,7 @@ class MeshNearbyController(private val context: Context) {
     private val connectionLifecycleCallback = object : ConnectionLifecycleCallback() {
         override fun onConnectionInitiated(endpointId: String, connectionInfo: ConnectionInfo) {
             peerNames[endpointId] = connectionInfo.endpointName
+            saveMeshContact(connectionInfo.endpointName, "Solicitando")
             updatePeer(endpointId, connectionInfo.endpointName, "Aceitando conexão")
             addLog("Conexão iniciada com ${connectionInfo.endpointName}")
 
@@ -229,6 +319,7 @@ class MeshNearbyController(private val context: Context) {
 
             if (result.status.statusCode == ConnectionsStatusCodes.STATUS_OK) {
                 connectedEndpointIds.add(endpointId)
+                saveMeshContact(name, "Conectado")
                 updatePeer(endpointId, name, "Conectado")
                 addLog("Conectado com $name")
             } else {
@@ -240,6 +331,7 @@ class MeshNearbyController(private val context: Context) {
         override fun onDisconnected(endpointId: String) {
             val name = peerNames[endpointId] ?: "Dispositivo"
             connectedEndpointIds.remove(endpointId)
+            saveMeshContact(name, "Offline")
             updatePeer(endpointId, name, "Desconectado")
             addLog("$name desconectou")
         }
@@ -248,6 +340,7 @@ class MeshNearbyController(private val context: Context) {
     private val endpointDiscoveryCallback = object : EndpointDiscoveryCallback() {
         override fun onEndpointFound(endpointId: String, info: DiscoveredEndpointInfo) {
             peerNames[endpointId] = info.endpointName
+            saveMeshContact(info.endpointName, "Encontrado")
             updatePeer(endpointId, info.endpointName, "Encontrado")
             addLog("Encontrado: ${info.endpointName}")
 
@@ -266,6 +359,7 @@ class MeshNearbyController(private val context: Context) {
         override fun onEndpointLost(endpointId: String) {
             val name = peerNames[endpointId] ?: "Dispositivo"
             connectedEndpointIds.remove(endpointId)
+            saveMeshContact(name, "Fora de alcance")
             updatePeer(endpointId, name, "Perdido")
             addLog("$name saiu do alcance")
         }
@@ -395,6 +489,17 @@ class MeshNearbyController(private val context: Context) {
                 addLog("Falha ao enviar: ${error.message ?: "sem detalhe"}")
             }
         }
+    }
+
+    private fun saveMeshContact(name: String, status: String) {
+        contactStore.upsertContact(name, status)
+        savedContacts = contactStore.loadContacts()
+    }
+
+    fun clearSavedContacts() {
+        contactStore.clearContacts()
+        savedContacts = emptyList()
+        addLog("Contatos Mesh salvos foram limpos")
     }
 
     private fun updatePeer(endpointId: String, name: String, status: String) {
@@ -579,6 +684,7 @@ fun MeshChatApp() {
             MeshTab.Conversations -> ConversationListScreen(
                 modifier = Modifier.padding(padding),
                 conversations = conversations,
+                savedContacts = nearbyController.savedContacts,
                 onOpenConversation = { selectedConversationId = it.id }
             )
 
@@ -663,6 +769,7 @@ fun MeshNavigationBar(
 fun ConversationListScreen(
     modifier: Modifier,
     conversations: List<Conversation>,
+    savedContacts: List<MeshSavedContact>,
     onOpenConversation: (Conversation) -> Unit
 ) {
     var search by rememberSaveable { mutableStateOf("") }
@@ -737,14 +844,14 @@ fun HeroStatusCard() {
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             Text(
-                text = "Nearby v0.2.0",
+                text = "Contatos Mesh v0.2.2",
                 style = MaterialTheme.typography.headlineSmall,
                 fontWeight = FontWeight.Bold,
                 color = MaterialTheme.colorScheme.onPrimaryContainer
             )
 
             Text(
-                text = "Nearby estabilizado: permissões, descoberta, visibilidade, conexão, envio rápido e estados mais claros para testes offline.",
+                text = "Contatos Mesh: dispositivos encontrados agora podem ficar salvos. Nearby estabilizado: permissões, descoberta, visibilidade, conexão, envio rápido e estados mais claros para testes offline.",
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onPrimaryContainer
             )
@@ -838,6 +945,56 @@ fun ConversationCard(
                     }
                 }
             }
+        }
+    }
+}
+
+@Composable
+fun SavedContactCard(contact: MeshSavedContact) {
+    ElevatedCard(
+        modifier = Modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(24.dp)
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(14.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            AvatarBubble(name = contact.name)
+
+            Spacer(modifier = Modifier.width(12.dp))
+
+            Column(
+                modifier = Modifier.weight(1f),
+                verticalArrangement = Arrangement.spacedBy(4.dp)
+            ) {
+                Text(
+                    text = contact.name,
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.Bold,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
+                )
+
+                Text(
+                    text = "Último contato: ${contact.lastSeen}",
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+
+                Text(
+                    text = "Contato salvo por conexão Mesh",
+                    style = MaterialTheme.typography.labelMedium,
+                    color = MaterialTheme.colorScheme.primary,
+                    fontWeight = FontWeight.SemiBold
+                )
+            }
+
+            AssistChip(
+                onClick = {},
+                label = { Text(contact.status) }
+            )
         }
     }
 }
@@ -1167,7 +1324,7 @@ fun NetworkScreen(
         item {
             StatusPanel(
                 title = "Rede Mesh",
-                body = "A v0.2.0 usa Nearby Connections para validar descoberta, conexão e envio de texto offline entre aparelhos próximos.",
+                body = "A v0.2.2 usa Nearby Connections para validar descoberta, conexão e envio de texto offline entre aparelhos próximos.",
                 primary = if (nearbyController.isConnected) "Conectado" else "Offline",
                 secondary = "Peers: ${nearbyController.connectedCount}"
             )
@@ -1225,9 +1382,17 @@ fun NetworkScreen(
 
         item {
             MeshMetricCard(
+                title = "Contatos salvos",
+                value = nearbyController.savedContacts.size.toString(),
+                detail = "Dispositivos encontrados/conectados que já viraram contatos Mesh."
+            )
+        }
+
+        item {
+            MeshMetricCard(
                 title = "Próximo alvo",
-                value = "v0.2.2",
-                detail = "Salvar dispositivos encontrados como contatos Mesh persistentes."
+                value = "v0.2.3",
+                detail = "Criar conversas persistentes associadas aos contatos Mesh."
             )
         }
     }
@@ -1250,7 +1415,7 @@ fun SettingsScreen(
         item {
             StatusPanel(
                 title = "Configurações",
-                body = "Preferências iniciais do Mesh Chat. Nearby básico ativado na v0.2.0.",
+                body = "Preferências iniciais do Mesh Chat. Contatos Mesh salvos ativados na v0.2.2.",
                 primary = APP_VERSION,
                 secondary = "Debug build"
             )
@@ -1288,6 +1453,14 @@ fun SettingsScreen(
                 title = "Nome local",
                 description = nearbyController.visibleName,
                 status = "Sessão"
+            )
+        }
+
+        item {
+            PermissionCard(
+                title = "Banco de contatos Mesh",
+                description = "Contatos salvos neste aparelho: ${nearbyController.savedContacts.size}",
+                status = "v0.2.2"
             )
         }
 
