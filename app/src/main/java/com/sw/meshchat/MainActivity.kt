@@ -101,7 +101,7 @@ import java.util.UUID
 import org.json.JSONArray
 import org.json.JSONObject
 
-private const val APP_VERSION = "v0.2.3-r1"
+private const val APP_VERSION = "v0.2.3-r2"
 private const val SERVICE_ID = "com.sw.meshchat.NEARBY_SERVICE"
 
 data class Conversation(
@@ -423,10 +423,16 @@ class MeshNearbyController(private val context: Context) {
 
         override fun onEndpointLost(endpointId: String) {
             val name = peerNames[endpointId] ?: "Dispositivo"
-            connectedEndpointIds.remove(endpointId)
-            saveMeshContact(name, "Fora de alcance")
-            updatePeer(endpointId, name, "Perdido")
-            addLog("$name saiu do alcance")
+
+            if (connectedEndpointIds.contains(endpointId)) {
+                saveMeshContact(name, "Conectado")
+                updatePeer(endpointId, name, "Conectado")
+                addLog("$name saiu do scanner, mas a conexão ativa foi mantida")
+            } else {
+                saveMeshContact(name, "Fora de alcance")
+                updatePeer(endpointId, name, "Perdido")
+                addLog("$name saiu do alcance")
+            }
         }
     }
 
@@ -1035,7 +1041,7 @@ fun HeroStatusCard() {
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             Text(
-                text = "Compatibilidade v0.2.3-r1",
+                text = "Conexão estável v0.2.3-r2",
                 style = MaterialTheme.typography.headlineSmall,
                 fontWeight = FontWeight.Bold,
                 color = MaterialTheme.colorScheme.onPrimaryContainer
@@ -1536,7 +1542,7 @@ fun NetworkScreen(
         item {
             StatusPanel(
                 title = "Rede Mesh",
-                body = "A v0.2.3-r1 usa Nearby Connections para validar descoberta, conexão e envio de texto offline entre aparelhos próximos.",
+                body = "A v0.2.3-r2 usa Nearby Connections para validar descoberta, conexão e envio de texto offline entre aparelhos próximos.",
                 primary = if (nearbyController.isConnected) "Conectado" else "Offline",
                 secondary = "Peers: ${nearbyController.connectedCount}"
             )
@@ -1672,7 +1678,7 @@ fun SettingsScreen(
             PermissionCard(
                 title = "Banco de contatos Mesh",
                 description = "Contatos salvos neste aparelho: ${nearbyController.savedContacts.size}",
-                status = "v0.2.3-r1"
+                status = "v0.2.3-r2"
             )
         }
 
