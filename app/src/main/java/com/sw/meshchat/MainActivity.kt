@@ -101,7 +101,7 @@ import java.util.UUID
 import org.json.JSONArray
 import org.json.JSONObject
 
-private const val APP_VERSION = "v0.2.3"
+private const val APP_VERSION = "v0.2.3-r1"
 private const val SERVICE_ID = "com.sw.meshchat.NEARBY_SERVICE"
 
 data class Conversation(
@@ -495,7 +495,7 @@ class MeshNearbyController(private val context: Context) {
                 addLog("Visibilidade já estava ativa")
             } else {
                 isAdvertising = false
-                addLog("Falha ao ficar visível: $detail")
+                addLog("Falha ao ficar visível: ${nearbyErrorHint(detail)}")
             }
         }
     }
@@ -523,7 +523,7 @@ class MeshNearbyController(private val context: Context) {
                 addLog("Scanner já estava ativo")
             } else {
                 isDiscovering = false
-                addLog("Falha no scanner: $detail")
+                addLog("Falha no scanner: ${nearbyErrorHint(detail)}")
             }
         }
     }
@@ -600,6 +600,26 @@ class MeshNearbyController(private val context: Context) {
         conversationVersion++
     }
 
+    private fun nearbyErrorHint(detail: String): String {
+        return when {
+            detail.contains("MISSING_PERMISSION_ACCESS_WIFI_STATE", ignoreCase = true) ||
+                detail.contains("ACCESS_WIFI_STATE", ignoreCase = true) ||
+                detail.contains("8032") -> {
+                "Compatibilidade Wi-Fi/Nearby bloqueada. Atualize a APK nos dois aparelhos e confirme permissões de Dispositivos por perto."
+            }
+
+            detail.contains("MISSING_PERMISSION", ignoreCase = true) -> {
+                "Permissão Nearby ausente ou bloqueada: $detail"
+            }
+
+            detail.contains("API_NOT_CONNECTED", ignoreCase = true) -> {
+                "Google Play Services/Nearby ainda não está pronto neste aparelho."
+            }
+
+            else -> detail
+        }
+    }
+
     private fun saveMeshContact(name: String, status: String) {
         contactStore.upsertContact(name, status)
         savedContacts = contactStore.loadContacts()
@@ -628,11 +648,30 @@ class MeshNearbyController(private val context: Context) {
 fun requiredNearbyPermissions(): Array<String> {
     val permissions = mutableListOf<String>()
 
+    /*
+     * Runtime permissions by Android version:
+     *
+     * Android 8/9:
+     * - Location permission may be needed for Bluetooth/Nearby discovery.
+     *
+     * Android 10/11/12:
+     * - Fine location is commonly required for discovery behavior.
+     *
+     * Android 12+:
+     * - Bluetooth scan/connect/advertise became runtime permissions.
+     *
+     * Android 13+:
+     * - Nearby Wi-Fi devices is required by newer local device discovery behavior.
+     *
+     * ACCESS_WIFI_STATE and CHANGE_WIFI_STATE are normal manifest permissions,
+     * not runtime permissions, so they are declared in AndroidManifest.xml only.
+     */
+
     if (Build.VERSION.SDK_INT <= 28) {
         permissions.add(Manifest.permission.ACCESS_COARSE_LOCATION)
     }
 
-    if (Build.VERSION.SDK_INT in 29..31) {
+    if (Build.VERSION.SDK_INT in 29..32) {
         permissions.add(Manifest.permission.ACCESS_FINE_LOCATION)
     }
 
@@ -646,7 +685,7 @@ fun requiredNearbyPermissions(): Array<String> {
         permissions.add(Manifest.permission.NEARBY_WIFI_DEVICES)
     }
 
-    return permissions.toTypedArray()
+    return permissions.distinct().toTypedArray()
 }
 
 fun hasAllNearbyPermissions(context: Context): Boolean {
@@ -658,6 +697,34 @@ fun hasAllNearbyPermissions(context: Context): Boolean {
         }
     }
 }
+
+fun nearbyAndroidCompatibilityLabel(): String {
+    return "Android ${Build.VERSION.RELEASE} / API ${Build.VERSION.SDK_INT}"
+}
+
+fun nearbyRuntimePermissionSummary(context: Context): String {
+    val required = requiredNearbyPermissions()
+
+    if (required.isEmpty()) {
+        return "Nenhuma permissão runtime extra exigida nesta versão do Android."
+    }
+
+    val missing = required.filter { permission ->
+        Build.VERSION.SDK_INT >= 23 &&
+            context.checkSelfPermission(permission) != PackageManager.PERMISSION_GRANTED
+    }
+
+    return if (missing.isEmpty()) {
+        "Permissões runtime concedidas. Wi-Fi, Bluetooth e Localização/Dispositivos próximos precisam continuar ligados."
+    } else {
+        "Permissões pendentes: ${missing.joinToString { it.substringAfterLast('.') }}"
+    }
+}
+
+fun nearbyPermissionStatusLabel(context: Context): String {
+    return if (hasAllNearbyPermissions(context)) "OK" else "Pendente"
+}
+
 
 @Composable
 fun MeshChatTheme(content: @Composable () -> Unit) {
@@ -968,7 +1035,7 @@ fun HeroStatusCard() {
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             Text(
-                text = "Conversas Mesh v0.2.3",
+                text = "Compatibilidade v0.2.3-r1",
                 style = MaterialTheme.typography.headlineSmall,
                 fontWeight = FontWeight.Bold,
                 color = MaterialTheme.colorScheme.onPrimaryContainer
@@ -1186,6 +1253,22 @@ fun NearbyScreen(
                     )
                 }
             }
+        }
+
+        item {
+            PermissionCard(
+                title = "Compatibilidade Android",
+                description = nearbyAndroidCompatibilityLabel(),
+                status = "Compat"
+            )
+        }
+
+        item {
+            PermissionCard(
+                title = "Permissões runtime",
+                description = nearbyRuntimePermissionSummary(context),
+                status = nearbyPermissionStatusLabel(context)
+            )
         }
 
         item {
@@ -1453,7 +1536,7 @@ fun NetworkScreen(
         item {
             StatusPanel(
                 title = "Rede Mesh",
-                body = "A v0.2.3 usa Nearby Connections para validar descoberta, conexão e envio de texto offline entre aparelhos próximos.",
+                body = "A v0.2.3-r1 usa Nearby Connections para validar descoberta, conexão e envio de texto offline entre aparelhos próximos.",
                 primary = if (nearbyController.isConnected) "Conectado" else "Offline",
                 secondary = "Peers: ${nearbyController.connectedCount}"
             )
@@ -1589,7 +1672,7 @@ fun SettingsScreen(
             PermissionCard(
                 title = "Banco de contatos Mesh",
                 description = "Contatos salvos neste aparelho: ${nearbyController.savedContacts.size}",
-                status = "v0.2.2"
+                status = "v0.2.3-r1"
             )
         }
 

@@ -2,19 +2,19 @@
 
     <!-- Nearby Connections / Wi-Fi state.
          Do NOT limit these with maxSdkVersion.
-         Some Android/Google Play Services versions require them even on newer devices. -->
+         Some Android / Google Play Services versions require them even on newer devices. -->
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
 
-    <!-- Android 11 and older Bluetooth permissions -->
+    <!-- Android 11 and older Bluetooth permissions. -->
     <uses-permission android:name="android.permission.BLUETOOTH" android:maxSdkVersion="30" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" android:maxSdkVersion="30" />
 
-    <!-- Location used by older Nearby/Bluetooth discovery behavior -->
+    <!-- Location used by older Nearby/Bluetooth discovery behavior. -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" android:maxSdkVersion="28" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" android:maxSdkVersion="32" />
 
-    <!-- Android 12+ Nearby/Bluetooth runtime permissions -->
+    <!-- Android 12+ Nearby/Bluetooth runtime permissions. -->
     <uses-permission android:name="android.permission.BLUETOOTH_ADVERTISE" />
     <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
     <uses-permission android:name="android.permission.BLUETOOTH_SCAN" />
