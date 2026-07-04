@@ -101,7 +101,7 @@ import java.util.UUID
 import org.json.JSONArray
 import org.json.JSONObject
 
-private const val APP_VERSION = "v0.2.4"
+private const val APP_VERSION = "v0.2.5"
 private const val SERVICE_ID = "com.sw.meshchat.NEARBY_SERVICE"
 
 data class Conversation(
@@ -211,6 +211,35 @@ fun meshConnectionVisualHint(status: String): String {
         else -> "Estado Nearby local."
     }
 }
+
+
+fun meshContactProfessionalSubtitle(contact: MeshSavedContact): String {
+    val status = meshConnectionVisualStatus(contact.status)
+    return "$status • Último contato: ${contact.lastSeen}"
+}
+
+fun meshContactActionLabel(status: String): String {
+    val normalized = status.lowercase(Locale.getDefault())
+    return when {
+        normalized.contains("conectado") -> "Abrir conversa"
+        normalized.contains("conexão mantida") || normalized.contains("conexao mantida") -> "Continuar"
+        normalized.contains("encontrado") -> "Preparar conversa"
+        normalized.contains("falha") || normalized.contains("erro") -> "Revisar"
+        else -> "Conversar"
+    }
+}
+
+fun meshContactTrustLabel(status: String): String {
+    val normalized = status.lowercase(Locale.getDefault())
+    return when {
+        normalized.contains("conectado") -> "Contato validado nesta sessão"
+        normalized.contains("conexão mantida") || normalized.contains("conexao mantida") -> "Canal mantido apesar da oscilação do scanner"
+        normalized.contains("encontrado") -> "Dispositivo visto pelo scanner local"
+        normalized.contains("fora") || normalized.contains("offline") || normalized.contains("desconectado") -> "Contato salvo para uso futuro"
+        else -> "Contato Mesh salvo neste aparelho"
+    }
+}
+
 
 
 class MainActivity : ComponentActivity() {
@@ -1075,7 +1104,7 @@ fun ConversationListScreen(
 
         item {
             Text(
-                text = "Conversas",
+                text = "Conversas locais",
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier.padding(top = 8.dp, bottom = 4.dp)
@@ -1105,7 +1134,7 @@ fun HeroStatusCard() {
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             Text(
-                text = "Indicadores v0.2.4",
+                text = "Contatos Mesh v0.2.5",
                 style = MaterialTheme.typography.headlineSmall,
                 fontWeight = FontWeight.Bold,
                 color = MaterialTheme.colorScheme.onPrimaryContainer
@@ -1606,7 +1635,7 @@ fun NetworkScreen(
         item {
             StatusPanel(
                 title = "Rede Mesh",
-                body = "A v0.2.4 usa Nearby Connections para validar descoberta, conexão e envio de texto offline entre aparelhos próximos.",
+                body = "A v0.2.5 usa Nearby Connections para validar descoberta, conexão e envio de texto offline entre aparelhos próximos.",
                 primary = if (nearbyController.isConnected) "Conectado" else "Offline",
                 secondary = "Peers: ${nearbyController.connectedCount}"
             )
@@ -1742,7 +1771,7 @@ fun SettingsScreen(
             PermissionCard(
                 title = "Banco de contatos Mesh",
                 description = "Contatos salvos neste aparelho: ${nearbyController.savedContacts.size}",
-                status = "v0.2.4"
+                status = "v0.2.5"
             )
         }
 
