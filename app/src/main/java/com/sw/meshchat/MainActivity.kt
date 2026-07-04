@@ -101,7 +101,7 @@ import java.util.UUID
 import org.json.JSONArray
 import org.json.JSONObject
 
-private const val APP_VERSION = "v0.2.3-r2"
+private const val APP_VERSION = "v0.2.4"
 private const val SERVICE_ID = "com.sw.meshchat.NEARBY_SERVICE"
 
 data class Conversation(
@@ -155,6 +155,63 @@ enum class MeshTab(
     Network("Rede", Icons.Filled.Info),
     Settings("Config", Icons.Filled.Settings)
 }
+
+
+fun meshConnectionVisualStatus(status: String): String {
+    val normalized = status.lowercase(Locale.getDefault())
+
+    return when {
+        normalized.contains("conexão mantida") ||
+            normalized.contains("conexao mantida") ||
+            normalized.contains("scanner instável") ||
+            normalized.contains("scanner instavel") -> "🟠 Conexão mantida"
+
+        normalized.contains("conectado") &&
+            !normalized.contains("desconectado") -> "🟢 Conectado"
+
+        normalized.contains("aceitando") ||
+            normalized.contains("solicitando") ||
+            normalized.contains("conectando") -> "🟡 Conectando"
+
+        normalized.contains("encontrado") -> "🟡 Encontrado"
+
+        normalized.contains("falha") ||
+            normalized.contains("erro") -> "🔴 Falha"
+
+        normalized.contains("perdido") ||
+            normalized.contains("fora de alcance") -> "⚫ Fora de alcance"
+
+        normalized.contains("offline") ||
+            normalized.contains("desconectado") ||
+            normalized.contains("parado") -> "⚫ Offline"
+
+        else -> status
+    }
+}
+
+fun meshConnectionVisualHint(status: String): String {
+    val normalized = status.lowercase(Locale.getDefault())
+
+    return when {
+        normalized.contains("conectado") &&
+            !normalized.contains("desconectado") -> "Canal Nearby ativo para troca de mensagens."
+
+        normalized.contains("conexão mantida") ||
+            normalized.contains("conexao mantida") -> "O scanner oscilou, mas o canal ativo foi preservado."
+
+        normalized.contains("encontrado") -> "Dispositivo visto pelo scanner. Aguarde a conexão."
+
+        normalized.contains("falha") ||
+            normalized.contains("erro") -> "Falha temporária. Pare e inicie offline nos dois aparelhos se persistir."
+
+        normalized.contains("offline") ||
+            normalized.contains("desconectado") ||
+            normalized.contains("parado") -> "Sem canal ativo neste momento."
+
+        else -> "Estado Nearby local."
+    }
+}
+
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -405,9 +462,16 @@ class MeshNearbyController(private val context: Context) {
     private val endpointDiscoveryCallback = object : EndpointDiscoveryCallback() {
         override fun onEndpointFound(endpointId: String, info: DiscoveredEndpointInfo) {
             peerNames[endpointId] = info.endpointName
-            saveMeshContact(info.endpointName, "Encontrado")
-            updatePeer(endpointId, info.endpointName, "Encontrado")
-            addLog("Encontrado: ${info.endpointName}")
+
+            if (connectedEndpointIds.contains(endpointId)) {
+                saveMeshContact(info.endpointName, "Conectado")
+                updatePeer(endpointId, info.endpointName, "Conexão mantida")
+                addLog("Scanner viu novamente ${info.endpointName}; conexão ativa mantida")
+            } else {
+                saveMeshContact(info.endpointName, "Encontrado")
+                updatePeer(endpointId, info.endpointName, "Encontrado")
+                addLog("Encontrado: ${info.endpointName}")
+            }
 
             if (!connectedEndpointIds.contains(endpointId)) {
                 client.requestConnection(localName, endpointId, connectionLifecycleCallback)
@@ -426,7 +490,7 @@ class MeshNearbyController(private val context: Context) {
 
             if (connectedEndpointIds.contains(endpointId)) {
                 saveMeshContact(name, "Conectado")
-                updatePeer(endpointId, name, "Conectado")
+                updatePeer(endpointId, name, "Conexão mantida")
                 addLog("$name saiu do scanner, mas a conexão ativa foi mantida")
             } else {
                 saveMeshContact(name, "Fora de alcance")
@@ -1041,7 +1105,7 @@ fun HeroStatusCard() {
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             Text(
-                text = "Conexão estável v0.2.3-r2",
+                text = "Indicadores v0.2.4",
                 style = MaterialTheme.typography.headlineSmall,
                 fontWeight = FontWeight.Bold,
                 color = MaterialTheme.colorScheme.onPrimaryContainer
@@ -1195,7 +1259,7 @@ fun SavedContactCard(
 
             AssistChip(
                 onClick = {},
-                label = { Text(contact.status) }
+                label = { Text(meshConnectionVisualStatus(contact.status)) }
             )
         }
     }
@@ -1482,7 +1546,7 @@ fun PeerCard(peer: NearbyPeer) {
             trailingContent = {
                 AssistChip(
                     onClick = {},
-                    label = { Text(peer.status) }
+                    label = { Text(meshConnectionVisualStatus(peer.status)) }
                 )
             }
         )
@@ -1542,7 +1606,7 @@ fun NetworkScreen(
         item {
             StatusPanel(
                 title = "Rede Mesh",
-                body = "A v0.2.3-r2 usa Nearby Connections para validar descoberta, conexão e envio de texto offline entre aparelhos próximos.",
+                body = "A v0.2.4 usa Nearby Connections para validar descoberta, conexão e envio de texto offline entre aparelhos próximos.",
                 primary = if (nearbyController.isConnected) "Conectado" else "Offline",
                 secondary = "Peers: ${nearbyController.connectedCount}"
             )
@@ -1678,7 +1742,7 @@ fun SettingsScreen(
             PermissionCard(
                 title = "Banco de contatos Mesh",
                 description = "Contatos salvos neste aparelho: ${nearbyController.savedContacts.size}",
-                status = "v0.2.3-r2"
+                status = "v0.2.4"
             )
         }
 
