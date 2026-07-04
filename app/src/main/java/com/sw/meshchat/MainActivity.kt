@@ -101,7 +101,7 @@ import java.util.UUID
 import org.json.JSONArray
 import org.json.JSONObject
 
-private const val APP_VERSION = "v0.2.5-r1-r1"
+private const val APP_VERSION = "v0.2.5-r2-r2"
 private const val SERVICE_ID = "com.sw.meshchat.NEARBY_SERVICE"
 
 data class Conversation(
@@ -1134,14 +1134,14 @@ fun HeroStatusCard() {
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             Text(
-                text = "Conversas Mesh v0.2.5-r1-r1",
+                text = "Conversas Mesh-r2",
                 style = MaterialTheme.typography.headlineSmall,
                 fontWeight = FontWeight.Bold,
                 color = MaterialTheme.colorScheme.onPrimaryContainer
             )
 
             Text(
-                text = "Conversas Mesh: tela principal reorganizada para contatos salvos, histórico local e preparação dos grupos offline.",
+                text = "Tela principal reorganizada para contatos salvos, histórico local e preparação dos grupos offline.",
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onPrimaryContainer
             )
@@ -1635,7 +1635,7 @@ fun NetworkScreen(
         item {
             StatusPanel(
                 title = "Rede Mesh",
-                body = "A v0.2.5-r1 usa Nearby Connections para validar descoberta, conexão e envio de texto offline entre aparelhos próximos.",
+                body = "A v0.2.5-r2-r2 usa Nearby Connections para validar descoberta, conexão e envio de texto offline entre aparelhos próximos.",
                 primary = if (nearbyController.isConnected) "Conectado" else "Salvos",
                 secondary = "Peers: ${nearbyController.connectedCount}"
             )
@@ -1726,7 +1726,7 @@ fun SettingsScreen(
         item {
             StatusPanel(
                 title = "Configurações",
-                body = "Preferências iniciais do Mesh Chat. Conversas Mesh reorganizadas na v0.2.5-r1.",
+                body = "Preferências iniciais do Mesh Chat. Conversas Mesh reorganizadas na v0.2.5-r2-r2.",
                 primary = APP_VERSION,
                 secondary = "Debug build"
             )
@@ -1771,7 +1771,7 @@ fun SettingsScreen(
             PermissionCard(
                 title = "Banco de contatos Mesh",
                 description = "Contatos salvos neste aparelho: ${nearbyController.savedContacts.size}",
-                status = "v0.2.5-r1-r1"
+                status = "v0.2.5-r2"
             )
         }
 
