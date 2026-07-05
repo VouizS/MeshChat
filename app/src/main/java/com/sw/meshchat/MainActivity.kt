@@ -101,7 +101,7 @@ import java.util.UUID
 import org.json.JSONArray
 import org.json.JSONObject
 
-private const val APP_VERSION = "v0.2.5-r2-r2"
+private const val APP_VERSION = "v0.3.0"
 private const val SERVICE_ID = "com.sw.meshchat.NEARBY_SERVICE"
 
 data class Conversation(
@@ -194,7 +194,7 @@ fun meshConnectionVisualHint(status: String): String {
 
     return when {
         normalized.contains("conectado") &&
-            !normalized.contains("desconectado") -> "Grupo Nearby ativo para troca de mensagens."
+            !normalized.contains("desconectado") -> "Sala Nearby ativo para troca de mensagens."
 
         normalized.contains("conexão mantida") ||
             normalized.contains("conexao mantida") -> "O scanner oscilou, mas o canal ativo foi preservado."
@@ -878,7 +878,7 @@ fun MeshChatApp() {
             Conversation(
                 id = 1,
                 name = "Rede Local Nearby",
-                lastMessage = "Mensagens offline reais ficam na aba Próximos; esta tela vira a central de histórico.",
+                lastMessage = "Canal local validado para mensagens sem internet externa.",
                 time = "Agora",
                 status = "Rede",
                 unread = 2
@@ -886,21 +886,21 @@ fun MeshChatApp() {
             Conversation(
                 id = 2,
                 name = "Contatos Mesh",
-                lastMessage = "Dispositivos encontrados ficam salvos no banco Mesh e serão ligados às conversas locais.",
+                lastMessage = "Contatos próximos viram base para salas e grupos offline.",
                 time = "Teste",
                 status = "Salvos"
             ),
             Conversation(
                 id = 3,
-                name = "Grupos Mesh",
-                lastMessage = "Grupos offline locais entram na v0.3.0 para vários dispositivos próximos.",
+                name = "Sala Mesh Local",
+                lastMessage = "Sala experimental para conversar com vários dispositivos próximos conectados.",
                 time = "Futuro",
                 status = "Grupo"
             ),
             Conversation(
                 id = 4,
                 name = "Diagnóstico Mesh",
-                lastMessage = "Acompanhe permissões, Nearby, scanner, pares e qualidade da conexão.",
+                lastMessage = "Acompanhe scanner, pares, mensagens e estabilidade da sala local.",
                 time = APP_VERSION,
                 status = "Rede"
             )
@@ -1000,7 +1000,7 @@ fun MeshChatApp() {
 fun MeshTopBar(tab: MeshTab) {
     val subtitle = when (tab) {
         MeshTab.Conversations -> "Mensagens offline em construção"
-        MeshTab.Nearby -> "Nearby Connections / contatos"
+        MeshTab.Nearby -> "Nearby Connections / grupos"
         MeshTab.Network -> "Diagnóstico Mesh da malha local"
         MeshTab.Settings -> "Preferências do aplicativo"
     }
@@ -1104,7 +1104,7 @@ fun ConversationListScreen(
 
         item {
             Text(
-                text = "Conversas Mesh",
+                text = "Grupos Mesh",
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier.padding(top = 8.dp, bottom = 4.dp)
@@ -1134,14 +1134,14 @@ fun HeroStatusCard() {
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             Text(
-                text = "Conversas Mesh-r2",
+                text = "Grupos Mesh",
                 style = MaterialTheme.typography.headlineSmall,
                 fontWeight = FontWeight.Bold,
                 color = MaterialTheme.colorScheme.onPrimaryContainer
             )
 
             Text(
-                text = "Tela principal reorganizada para contatos salvos, histórico local e preparação dos grupos offline.",
+                text = "Primeira etapa de grupos offline locais: sala experimental, contatos próximos e envio para múltiplos dispositivos conectados.",
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onPrimaryContainer
             )
@@ -1301,7 +1301,7 @@ fun NearbyScreen(
 ) {
     val context = LocalContext.current
     var permissionsGranted by remember { mutableStateOf(hasAllNearbyPermissions(context)) }
-    var nearbyInput by rememberSaveable { mutableStateOf("Olá pelo Mesh Chat offline") }
+    var nearbyInput by rememberSaveable { mutableStateOf("Mensagem para dispositivos conectados") }
 
     val permissionLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestMultiplePermissions()
@@ -1454,7 +1454,7 @@ fun NearbyScreen(
 
         item {
             Text(
-                text = "Dispositivos encontrados/conectados",
+                text = "Dispositivos na sala local",
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.Bold
             )
@@ -1476,7 +1476,7 @@ fun NearbyScreen(
 
         item {
             Text(
-                text = "Mensagem Nearby",
+                text = "Mensagem para sala local",
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.Bold
             )
@@ -1635,7 +1635,7 @@ fun NetworkScreen(
         item {
             StatusPanel(
                 title = "Rede Mesh",
-                body = "A v0.2.5-r2-r2 usa Nearby Connections para validar descoberta, conexão e envio de texto offline entre aparelhos próximos.",
+                body = "A v0.3.0 usa Nearby Connections para validar descoberta, conexão e envio de texto offline entre aparelhos próximos.",
                 primary = if (nearbyController.isConnected) "Conectado" else "Salvos",
                 secondary = "Peers: ${nearbyController.connectedCount}"
             )
@@ -1695,14 +1695,14 @@ fun NetworkScreen(
             MeshMetricCard(
                 title = "Contatos salvos",
                 value = nearbyController.savedContacts.size.toString(),
-                detail = "Dispositivos encontrados/conectados que já viraram contatos Mesh."
+                detail = "Dispositivos na sala local que já viraram contatos Mesh."
             )
         }
 
         item {
             MeshMetricCard(
                 title = "Próximo alvo",
-                value = "v0.2.4",
+                value = "v0.3.1",
                 detail = "Adicionar indicadores de qualidade: verde, laranja, vermelho e offline."
             )
         }
@@ -1726,7 +1726,7 @@ fun SettingsScreen(
         item {
             StatusPanel(
                 title = "Configurações",
-                body = "Preferências iniciais do Mesh Chat. Conversas Mesh reorganizadas na v0.2.5-r2-r2.",
+                body = "Preferências iniciais do Mesh Chat. Grupos offline locais iniciados na v0.3.0.",
                 primary = APP_VERSION,
                 secondary = "Debug build"
             )
@@ -1771,7 +1771,7 @@ fun SettingsScreen(
             PermissionCard(
                 title = "Banco de contatos Mesh",
                 description = "Contatos salvos neste aparelho: ${nearbyController.savedContacts.size}",
-                status = "v0.2.5-r2"
+                status = "v0.3.0"
             )
         }
 
