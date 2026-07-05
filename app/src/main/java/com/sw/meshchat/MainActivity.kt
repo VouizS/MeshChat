@@ -101,7 +101,7 @@ import java.util.UUID
 import org.json.JSONArray
 import org.json.JSONObject
 
-private const val APP_VERSION = "v0.3.0"
+private const val APP_VERSION = "v0.3.1"
 private const val SERVICE_ID = "com.sw.meshchat.NEARBY_SERVICE"
 
 data class Conversation(
@@ -1000,7 +1000,7 @@ fun MeshChatApp() {
 fun MeshTopBar(tab: MeshTab) {
     val subtitle = when (tab) {
         MeshTab.Conversations -> "Mensagens offline em construção"
-        MeshTab.Nearby -> "Nearby Connections / grupos"
+        MeshTab.Nearby -> "Sala local / chat offline"
         MeshTab.Network -> "Diagnóstico Mesh da malha local"
         MeshTab.Settings -> "Preferências do aplicativo"
     }
@@ -1096,7 +1096,7 @@ fun ConversationListScreen(
                         contentDescription = "Buscar"
                     )
                 },
-                placeholder = { Text("Buscar conversas") },
+                placeholder = { Text("Buscar salas, contatos ou conversas") },
                 shape = RoundedCornerShape(24.dp),
                 singleLine = true
             )
@@ -1141,7 +1141,7 @@ fun HeroStatusCard() {
             )
 
             Text(
-                text = "Primeira etapa de grupos offline locais: sala experimental, contatos próximos e envio para múltiplos dispositivos conectados.",
+                text = "Sala local com layout de chat: mensagens recentes embaixo e campo de envio fixo no rodapé.",
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onPrimaryContainer
             )
@@ -1301,7 +1301,7 @@ fun NearbyScreen(
 ) {
     val context = LocalContext.current
     var permissionsGranted by remember { mutableStateOf(hasAllNearbyPermissions(context)) }
-    var nearbyInput by rememberSaveable { mutableStateOf("Mensagem para dispositivos conectados") }
+    var nearbyInput by rememberSaveable { mutableStateOf("") }
 
     val permissionLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestMultiplePermissions()
@@ -1309,247 +1309,203 @@ fun NearbyScreen(
         permissionsGranted = hasAllNearbyPermissions(context)
     }
 
-    LazyColumn(
-        modifier = modifier.fillMaxSize(),
-        contentPadding = PaddingValues(16.dp),
-        verticalArrangement = Arrangement.spacedBy(12.dp)
+    Column(
+        modifier = modifier
+            .fillMaxSize()
+            .padding(horizontal = 16.dp)
     ) {
-        item {
-            StatusPanel(
-                title = "Dispositivos próximos",
-                body = "Teste inicial do Nearby Connections. Em dois celulares, conceda permissões e toque em Iniciar offline nos dois aparelhos.",
-                primary = "${nearbyController.peers.size} encontrados",
-                secondary = if (nearbyController.isConnected) "Conectado" else "Scanner/visível"
-            )
-        }
-
-        item {
-            ElevatedCard(
-                modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(24.dp)
+        ElevatedCard(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 8.dp, bottom = 8.dp),
+            shape = RoundedCornerShape(24.dp)
+        ) {
+            Column(
+                modifier = Modifier.padding(14.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                Column(
-                    modifier = Modifier.padding(18.dp),
-                    verticalArrangement = Arrangement.spacedBy(12.dp)
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
+                    Column(modifier = Modifier.weight(1f)) {
+                        Text(
+                            text = "Sala Mesh Local",
+                            style = MaterialTheme.typography.titleMedium,
+                            fontWeight = FontWeight.Bold
+                        )
+                        Text(
+                            text = "${nearbyController.connectedCount} conectados • ${nearbyController.peers.size} vistos",
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    }
+
+                    AssistChip(
+                        onClick = {},
+                        label = {
+                            Text(
+                                if (nearbyController.connectedCount > 0) {
+                                    "🟢 Ativa"
+                                } else if (nearbyController.isAdvertising || nearbyController.isDiscovering) {
+                                    "🟡 Procurando"
+                                } else {
+                                    "⚫ Parada"
+                                }
+                            )
+                        }
+                    )
+                }
+
+                if (!permissionsGranted) {
+                    FilledTonalButton(
+                        onClick = { permissionLauncher.launch(requiredNearbyPermissions()) },
+                        modifier = Modifier.fillMaxWidth(),
+                        shape = RoundedCornerShape(20.dp)
+                    ) {
+                        Text("Permitir recursos offline")
+                    }
+                } else {
+                    Row(
+                        horizontalArrangement = Arrangement.spacedBy(10.dp),
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        FilledTonalButton(
+                            onClick = { nearbyController.startSalvos() },
+                            enabled = !(nearbyController.isAdvertising && nearbyController.isDiscovering),
+                            modifier = Modifier.weight(1f),
+                            shape = RoundedCornerShape(20.dp)
+                        ) {
+                            Text(
+                                if (nearbyController.isAdvertising || nearbyController.isDiscovering) {
+                                    "Sala ativa"
+                                } else {
+                                    "Iniciar sala"
+                                }
+                            )
+                        }
+
+                        FilledTonalButton(
+                            onClick = { nearbyController.stopSalvos() },
+                            modifier = Modifier.weight(1f),
+                            shape = RoundedCornerShape(20.dp),
+                            colors = ButtonDefaults.filledTonalButtonColors(
+                                containerColor = MaterialTheme.colorScheme.surfaceVariant,
+                                contentColor = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
+                        ) {
+                            Text("Parar")
+                        }
+                    }
+                }
+
+                if (nearbyController.peers.isNotEmpty()) {
                     Text(
-                        text = "Meu nome local",
-                        style = MaterialTheme.typography.titleMedium,
+                        text = "Dispositivos na sala",
+                        style = MaterialTheme.typography.labelLarge,
                         fontWeight = FontWeight.Bold
                     )
 
+                    nearbyController.peers.take(3).forEach { peer ->
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Text(
+                                text = peer.name,
+                                modifier = Modifier.weight(1f),
+                                style = MaterialTheme.typography.bodyMedium,
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis
+                            )
+                            Text(
+                                text = meshConnectionVisualStatus(peer.status),
+                                style = MaterialTheme.typography.labelMedium,
+                                color = MaterialTheme.colorScheme.primary,
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis
+                            )
+                        }
+                    }
+                } else {
                     Text(
-                        text = nearbyController.visibleName,
-                        style = MaterialTheme.typography.bodyLarge,
-                        color = MaterialTheme.colorScheme.primary,
-                        fontWeight = FontWeight.Bold
-                    )
-
-                    Text(
-                        text = "Use dois aparelhos próximos com Mesh Chat aberto para validar o envio offline.",
+                        text = if (permissionsGranted) {
+                            "Nenhum dispositivo conectado ainda. Abra o app em outro Android e inicie a sala nos dois."
+                        } else {
+                            "Conceda permissões para iniciar a sala local."
+                        },
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
+
+                Text(
+                    text = "Eventos técnicos: ${nearbyController.logs.size}. Veja detalhes completos na aba Rede.",
+                    style = MaterialTheme.typography.labelMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
             }
         }
 
-        item {
-            PermissionCard(
-                title = "Compatibilidade Android",
-                description = nearbyAndroidCompatibilityLabel(),
-                status = "Compat"
-            )
-        }
-
-        item {
-            PermissionCard(
-                title = "Permissões runtime",
-                description = nearbyRuntimePermissionSummary(context),
-                status = nearbyPermissionStatusLabel(context)
-            )
-        }
-
-        item {
-            Text(
-                text = "Controle offline",
-                style = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight.Bold
-            )
-        }
-
-        item {
-            if (!permissionsGranted) {
-                FilledTonalButton(
-                    onClick = {
-                        permissionLauncher.launch(requiredNearbyPermissions())
-                    },
-                    modifier = Modifier.fillMaxWidth(),
-                    shape = RoundedCornerShape(20.dp)
-                ) {
-                    Text("Permitir recursos offline")
-                }
-            } else {
-                Row(
-                    horizontalArrangement = Arrangement.spacedBy(10.dp),
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    FilledTonalButton(
-                        onClick = { nearbyController.startSalvos() },
-                        enabled = !(nearbyController.isAdvertising && nearbyController.isDiscovering),
-                        modifier = Modifier.weight(1f),
-                        shape = RoundedCornerShape(20.dp)
+        LazyColumn(
+            modifier = Modifier
+                .weight(1f)
+                .fillMaxWidth(),
+            reverseLayout = true,
+            contentPadding = PaddingValues(top = 8.dp, bottom = 8.dp),
+            verticalArrangement = Arrangement.spacedBy(10.dp)
+        ) {
+            if (nearbyController.nearbyMessages.isEmpty()) {
+                item {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(top = 24.dp),
+                        contentAlignment = Alignment.Center
                     ) {
                         Text(
-                            if (nearbyController.isAdvertising || nearbyController.isDiscovering) {
-                                "Salvos ativo"
-                            } else {
-                                "Iniciar offline"
-                            }
+                            text = "Mensagens da sala aparecerão aqui.",
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                     }
-
-                    FilledTonalButton(
-                        onClick = { nearbyController.stopSalvos() },
-                        modifier = Modifier.weight(1f),
-                        shape = RoundedCornerShape(20.dp),
-                        colors = ButtonDefaults.filledTonalButtonColors(
-                            containerColor = MaterialTheme.colorScheme.surfaceVariant,
-                            contentColor = MaterialTheme.colorScheme.onSurfaceVariant
-                        )
-                    ) {
-                        Text("Parar")
-                    }
+                }
+            } else {
+                items(nearbyController.nearbyMessages.asReversed()) { message ->
+                    NearbyMessageBubble(message = message)
                 }
             }
         }
 
-        item {
-            PermissionCard(
-                title = "Permissões",
-                description = if (permissionsGranted) {
-                    "Permissões necessárias concedidas neste aparelho."
-                } else {
-                    "Conceda as permissões para anunciar, descobrir e conectar dispositivos próximos."
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .navigationBarsPadding()
+                .imePadding()
+                .padding(top = 8.dp, bottom = 8.dp),
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            verticalAlignment = Alignment.Bottom
+        ) {
+            OutlinedTextField(
+                value = nearbyInput,
+                onValueChange = { nearbyInput = it },
+                modifier = Modifier.weight(1f),
+                placeholder = { Text("Mensagem") },
+                shape = RoundedCornerShape(28.dp),
+                maxLines = 4
+            )
+
+            FilledTonalButton(
+                onClick = {
+                    nearbyController.sendNearbyText(nearbyInput)
+                    nearbyInput = ""
                 },
-                status = if (permissionsGranted) "OK" else "Pendente"
-            )
-        }
-
-        item {
-            PermissionCard(
-                title = "Visibilidade",
-                description = "Advertising: este celular fica visível para outros Mesh Chat próximos.",
-                status = if (nearbyController.isAdvertising) "Ativo" else "Inativo"
-            )
-        }
-
-        item {
-            PermissionCard(
-                title = "Scanner",
-                description = "Discovery: este celular procura outros Mesh Chat próximos.",
-                status = if (nearbyController.isDiscovering) "Ativo" else "Inativo"
-            )
-        }
-
-        item {
-            Text(
-                text = "Dispositivos na sala local",
-                style = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight.Bold
-            )
-        }
-
-        if (nearbyController.peers.isEmpty()) {
-            item {
-                MeshMetricCard(
-                    title = "Nenhum dispositivo ainda",
-                    value = "0",
-                    detail = "Abra o APK em outro Android, conceda permissões e toque em Iniciar offline nos dois."
-                )
-            }
-        } else {
-            items(nearbyController.peers) { peer ->
-                PeerCard(peer = peer)
-            }
-        }
-
-        item {
-            Text(
-                text = "Mensagem para sala local",
-                style = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight.Bold
-            )
-        }
-
-        item {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
-                verticalAlignment = Alignment.Bottom
+                shape = RoundedCornerShape(24.dp),
+                contentPadding = PaddingValues(horizontal = 14.dp, vertical = 18.dp)
             ) {
-                OutlinedTextField(
-                    value = nearbyInput,
-                    onValueChange = { nearbyInput = it },
-                    modifier = Modifier.weight(1f),
-                    placeholder = { Text("Mensagem offline") },
-                    shape = RoundedCornerShape(24.dp),
-                    maxLines = 3
-                )
-
-                FilledTonalButton(
-                    onClick = {
-                        nearbyController.sendNearbyText(nearbyInput)
-                    },
-                    shape = RoundedCornerShape(22.dp),
-                    contentPadding = PaddingValues(horizontal = 14.dp, vertical = 16.dp)
-                ) {
-                    Icon(
-                        imageVector = Icons.Filled.Send,
-                        contentDescription = "Enviar"
-                    )
-                }
-            }
-        }
-
-        items(nearbyController.nearbyMessages) { message ->
-            NearbyMessageBubble(message = message)
-        }
-
-        item {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(
-                    text = "Eventos",
-                    style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.Bold,
-                    modifier = Modifier.weight(1f)
-                )
-
-                if (nearbyController.logs.isNotEmpty()) {
-                    TextButton(onClick = { nearbyController.clearEvents() }) {
-                        Text("Limpar")
-                    }
-                }
-            }
-        }
-
-        if (nearbyController.logs.isEmpty()) {
-            item {
-                Text(
-                    text = "Sem eventos ainda.",
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
-            }
-        } else {
-            items(nearbyController.logs) { log ->
-                Text(
-                    text = log,
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                Icon(
+                    imageVector = Icons.Filled.Send,
+                    contentDescription = "Enviar"
                 )
             }
         }
@@ -1635,7 +1591,7 @@ fun NetworkScreen(
         item {
             StatusPanel(
                 title = "Rede Mesh",
-                body = "A v0.3.0 usa Nearby Connections para validar descoberta, conexão e envio de texto offline entre aparelhos próximos.",
+                body = "A v0.3.1 usa Nearby Connections para validar descoberta, conexão e envio de texto offline entre aparelhos próximos.",
                 primary = if (nearbyController.isConnected) "Conectado" else "Salvos",
                 secondary = "Peers: ${nearbyController.connectedCount}"
             )
@@ -1702,8 +1658,8 @@ fun NetworkScreen(
         item {
             MeshMetricCard(
                 title = "Próximo alvo",
-                value = "v0.3.1",
-                detail = "Adicionar indicadores de qualidade: verde, laranja, vermelho e offline."
+                value = "v0.3.2",
+                detail = "Fortalecer envio para múltiplos peers conectados e recibos simples da sala."
             )
         }
     }
@@ -1726,7 +1682,7 @@ fun SettingsScreen(
         item {
             StatusPanel(
                 title = "Configurações",
-                body = "Preferências iniciais do Mesh Chat. Grupos offline locais iniciados na v0.3.0.",
+                body = "Preferências iniciais do Mesh Chat. Grupos offline locais iniciados na v0.3.1.",
                 primary = APP_VERSION,
                 secondary = "Debug build"
             )
@@ -1771,7 +1727,7 @@ fun SettingsScreen(
             PermissionCard(
                 title = "Banco de contatos Mesh",
                 description = "Contatos salvos neste aparelho: ${nearbyController.savedContacts.size}",
-                status = "v0.3.0"
+                status = "v0.3.1"
             )
         }
 
