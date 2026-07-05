@@ -101,7 +101,7 @@ import java.util.UUID
 import org.json.JSONArray
 import org.json.JSONObject
 
-private const val APP_VERSION = "v0.3.1"
+private const val APP_VERSION = "v0.3.2"
 private const val SERVICE_ID = "com.sw.meshchat.NEARBY_SERVICE"
 
 data class Conversation(
@@ -418,6 +418,9 @@ class MeshNearbyController(private val context: Context) {
     var logs by mutableStateOf<List<String>>(emptyList())
         private set
 
+    var lastRoomDeliverySummary by mutableStateOf("Nenhum envio ainda")
+        private set
+
     val isConnected: Boolean
         get() = connectedEndpointIds.isNotEmpty()
 
@@ -631,26 +634,58 @@ class MeshNearbyController(private val context: Context) {
         val clean = text.trim()
         if (clean.isEmpty()) return
 
+        val targetEndpointIds = connectedEndpointIds.toList()
+        val targetCount = targetEndpointIds.size
+
+        val localFrom = when (targetCount) {
+            0 -> "Você • local"
+            1 -> "Você • 1 dispositivo"
+            else -> "Você • $targetCount dispositivos"
+        }
+
         nearbyMessages = nearbyMessages + NearbyTextMessage(
             text = clean,
             mine = true,
             time = now(),
-            from = "Você"
+            from = localFrom
         )
 
-        if (connectedEndpointIds.isEmpty()) {
+        if (targetEndpointIds.isEmpty()) {
+            lastRoomDeliverySummary = "Sem peers conectados — mensagem local"
             addLog("Nenhum peer conectado. A mensagem ficou apenas local nesta sessão")
             return
         }
 
-        connectedEndpointIds.forEach { endpointId ->
+        lastRoomDeliverySummary = if (targetCount == 1) {
+            "Enviando para 1 dispositivo"
+        } else {
+            "Enviando para $targetCount dispositivos"
+        }
+
+        var successCount = 0
+        var failCount = 0
+
+        targetEndpointIds.forEach { endpointId ->
+            val peerName = peerNames[endpointId] ?: "Dispositivo"
             client.sendPayload(
                 endpointId,
                 Payload.fromBytes(clean.toByteArray(Charsets.UTF_8))
             ).addOnSuccessListener {
-                addLog("Mensagem enviada")
+                successCount += 1
+                lastRoomDeliverySummary = if (failCount == 0) {
+                    if (successCount == 1) {
+                        "Entregue para 1 dispositivo"
+                    } else {
+                        "Entregue para $successCount dispositivos"
+                    }
+                } else {
+                    "Entregue: $successCount • Falha: $failCount"
+                }
+                addLog("✓ Mensagem entregue para $peerName")
             }.addOnFailureListener { error ->
-                addLog("Falha ao enviar: ${error.message ?: "sem detalhe"}")
+                failCount += 1
+                lastRoomDeliverySummary = "Entregue: $successCount • Falha: $failCount"
+                addLog("Falha ao enviar para $peerName: ${error.message ?: "sem detalhe"}")
             }
         }
     }
@@ -1141,7 +1176,7 @@ fun HeroStatusCard() {
             )
 
             Text(
-                text = "Sala local com layout de chat: mensagens recentes embaixo e campo de envio fixo no rodapé.",
+                text = "Sala local com envio para múltiplos dispositivos e recibos simples da sessão.",
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onPrimaryContainer
             )
@@ -1440,7 +1475,7 @@ fun NearbyScreen(
                 }
 
                 Text(
-                    text = "Eventos técnicos: ${nearbyController.logs.size}. Veja detalhes completos na aba Rede.",
+                    text = "Último envio: ${nearbyController.lastRoomDeliverySummary} • Eventos: ${nearbyController.logs.size}",
                     style = MaterialTheme.typography.labelMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
@@ -1591,7 +1626,7 @@ fun NetworkScreen(
         item {
             StatusPanel(
                 title = "Rede Mesh",
-                body = "A v0.3.1 usa Nearby Connections para validar descoberta, conexão e envio de texto offline entre aparelhos próximos.",
+                body = "A v0.3.2 usa Nearby Connections para enviar mensagens para múltiplos dispositivos próximos conectados.",
                 primary = if (nearbyController.isConnected) "Conectado" else "Salvos",
                 secondary = "Peers: ${nearbyController.connectedCount}"
             )
@@ -1613,7 +1648,7 @@ fun NetworkScreen(
                     )
 
                     Text(
-                        text = "Grupo Nearby",
+                        text = "Sala Nearby",
                         style = MaterialTheme.typography.bodyMedium
                     )
 
@@ -1641,9 +1676,9 @@ fun NetworkScreen(
 
         item {
             MeshMetricCard(
-                title = "Mensagens Nearby",
+                title = "Mensagens da sala",
                 value = nearbyController.nearbyMessages.size.toString(),
-                detail = "Mensagens enviadas/recebidas pela tela Próximos."
+                detail = "Mensagens enviadas/recebidas pela sala local."
             )
         }
 
@@ -1658,8 +1693,8 @@ fun NetworkScreen(
         item {
             MeshMetricCard(
                 title = "Próximo alvo",
-                value = "v0.3.2",
-                detail = "Fortalecer envio para múltiplos peers conectados e recibos simples da sala."
+                value = "v0.3.3",
+                detail = "Adicionar lista de membros da sala com nome, status e último contato."
             )
         }
     }
@@ -1682,7 +1717,7 @@ fun SettingsScreen(
         item {
             StatusPanel(
                 title = "Configurações",
-                body = "Preferências iniciais do Mesh Chat. Grupos offline locais iniciados na v0.3.1.",
+                body = "Preferências iniciais do Mesh Chat. Grupos offline locais iniciados na v0.3.2.",
                 primary = APP_VERSION,
                 secondary = "Debug build"
             )
@@ -1727,7 +1762,7 @@ fun SettingsScreen(
             PermissionCard(
                 title = "Banco de contatos Mesh",
                 description = "Contatos salvos neste aparelho: ${nearbyController.savedContacts.size}",
-                status = "v0.3.1"
+                status = "v0.3.2"
             )
         }
 
